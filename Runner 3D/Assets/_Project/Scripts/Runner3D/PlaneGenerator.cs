@@ -17,14 +17,18 @@ namespace JoaoSantos.Runner3D.WorldElement
         [Header("References")]
 
         [SerializeField]
-        private Plane planePrefab;
+        private List<Plane> planePrefabs;
 
         [SerializeField]
         private Transform planeArea;
 
+        #region Local Variable        
+
         private float nextPlanePosition;
 
         private List<Plane> spawnedPlanes;
+
+        #endregion
 
         #region  Unity Methods
 
@@ -79,7 +83,9 @@ namespace JoaoSantos.Runner3D.WorldElement
 
         private void OnSpawnNextPlane()
         {
-            var plane = Instantiate(this.planePrefab, this.planeArea);
+            var planePrefab = planePrefabs.GetRandomItem();
+
+            var plane = Instantiate(planePrefab, this.planeArea);
             plane.transform.localPosition = new Vector3(0, 0, this.nextPlanePosition);
 
             this.spawnedPlanes.Add(plane);
