@@ -121,6 +121,36 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &75180371
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 75180372}
+  m_Layer: 0
+  m_Name: DisabledPoolArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &75180372
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75180371}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 40, y: 2, z: -3000}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &427751572
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -186,7 +216,32 @@ PrefabInstance:
     - target: {fileID: 1135043238930222651, guid: bda850dc1e9812847bbdd3309e243dbb,
         type: 3}
       propertyPath: m_Name
-      value: PlaneDefault
+      value: TrackDefault
+      objectReference: {fileID: 0}
+    - target: {fileID: 4851886593466695763, guid: bda850dc1e9812847bbdd3309e243dbb,
+        type: 3}
+      propertyPath: hideTrackEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4851886593466695763, guid: bda850dc1e9812847bbdd3309e243dbb,
+        type: 3}
+      propertyPath: hideTrackEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4851886593466695763, guid: bda850dc1e9812847bbdd3309e243dbb,
+        type: 3}
+      propertyPath: hideTrackEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4851886593466695763, guid: bda850dc1e9812847bbdd3309e243dbb,
+        type: 3}
+      propertyPath: hideTrackEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 936337003}
+    - target: {fileID: 4851886593466695763, guid: bda850dc1e9812847bbdd3309e243dbb,
+        type: 3}
+      propertyPath: isToDestroy
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bda850dc1e9812847bbdd3309e243dbb, type: 3}
@@ -382,6 +437,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &936337003 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1135043238930222651, guid: bda850dc1e9812847bbdd3309e243dbb,
+    type: 3}
+  m_PrefabInstance: {fileID: 427751572}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,7 +603,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1470199216}
   m_Layer: 0
-  m_Name: PlaneArea
+  m_Name: TrackArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -629,7 +690,12 @@ PrefabInstance:
     - target: {fileID: 1135043238930222651, guid: bda850dc1e9812847bbdd3309e243dbb,
         type: 3}
       propertyPath: m_Name
-      value: PlaneDefault (1)
+      value: TrackDefault (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4851886593466695763, guid: bda850dc1e9812847bbdd3309e243dbb,
+        type: 3}
+      propertyPath: isToDestroy
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bda850dc1e9812847bbdd3309e243dbb, type: 3}
@@ -805,7 +871,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1601619756}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.73, z: 93.2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -822,7 +888,7 @@ GameObject:
   - component: {fileID: 1702838855}
   - component: {fileID: 1702838854}
   m_Layer: 0
-  m_Name: PlatformGenerator
+  m_Name: TrackGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -840,12 +906,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b26e26cefdd3a51408363f9968c832a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyPreviouslyPlaneDelay: 2
-  planePrefabs:
-  - {fileID: 1647336045369451087, guid: f0e5dfa6aaa545a42b604bb56365bb5d, type: 3}
-  - {fileID: 7190877173359763009, guid: 3b70f1a4ca52eed4887f9146d84cf874, type: 3}
-  - {fileID: 1812835090440900864, guid: f33690cf55820b549922fbfb2143e5ab, type: 3}
-  planeArea: {fileID: 1470199216}
+  hidePreviouslyTrackDelay: 3
+  testPoolAsset: {fileID: 11400000, guid: b3682479391e7db40aa907e4ddda1811, type: 2}
+  trackArea: {fileID: 1470199216}
 --- !u!4 &1702838855
 Transform:
   m_ObjectHideFlags: 0
@@ -884,7 +947,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1785121549}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.73, z: 93.2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -914,7 +977,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1902233461}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.73, z: 93.2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -960,7 +1023,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1987392045}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: fbe0b710b9780cc4fbc1d3f8aaf631a8, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1013,3 +1076,51 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1987392045}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &2058300730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2058300732}
+  - component: {fileID: 2058300731}
+  m_Layer: 0
+  m_Name: PoolSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2058300731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2058300730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bb28b3fb7581e04fa3514beaaf9087f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  disabledPoolArea: {fileID: 75180372}
+  basePrefabs:
+  - {fileID: 1647336045369451087, guid: f0e5dfa6aaa545a42b604bb56365bb5d, type: 3}
+  - {fileID: 7190877173359763009, guid: 3b70f1a4ca52eed4887f9146d84cf874, type: 3}
+  - {fileID: 1812835090440900864, guid: f33690cf55820b549922fbfb2143e5ab, type: 3}
+--- !u!4 &2058300732
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2058300730}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
