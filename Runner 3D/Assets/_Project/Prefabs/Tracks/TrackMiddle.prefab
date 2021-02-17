@@ -65,8 +65,14 @@ PrefabInstance:
     - target: {fileID: 1135043238930222651, guid: bda850dc1e9812847bbdd3309e243dbb,
         type: 3}
       propertyPath: m_Name
-      value: Plane
+      value: TrackMiddle
       objectReference: {fileID: 0}
+    - target: {fileID: 4851886593466695763, guid: bda850dc1e9812847bbdd3309e243dbb,
+        type: 3}
+      propertyPath: poolAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: a3f1367980fc7764f9a5a8b806dd2831,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bda850dc1e9812847bbdd3309e243dbb, type: 3}
 --- !u!4 &7167538136435209363 stripped

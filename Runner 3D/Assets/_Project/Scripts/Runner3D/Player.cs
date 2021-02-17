@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using JoaoSantos.General;
-
 namespace JoaoSantos.Runner3D.WorldElement
 {
     [Serializable]

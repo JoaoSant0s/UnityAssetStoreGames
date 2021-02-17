@@ -228,7 +228,7 @@ GameObject:
   - component: {fileID: 4851886593466695763}
   - component: {fileID: 8483622265288623366}
   m_Layer: 0
-  m_Name: PlaneDefault
+  m_Name: TrackDefault
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -264,11 +264,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 279a83a6c31360f46b60dd1e4cfbb173, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poolAsset: {fileID: 11400000, guid: 97d32df2177d1354f8da7f3ae3975a2e, type: 2}
   size: 100
-  spawnNextPlaneEvent:
+  isToDestroy: 0
+  spawnNextTrackEvent:
     m_PersistentCalls:
       m_Calls: []
-  destroyPlaneEvent:
+  hideTrackEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!65 &8483622265288623366
