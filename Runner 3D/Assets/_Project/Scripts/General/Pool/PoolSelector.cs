@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using JoaoSantos.General.Asset;
+using Unity.Entities;
 
 namespace JoaoSantos.General
 {
@@ -12,7 +13,7 @@ namespace JoaoSantos.General
         [Header("Areas")]
         [SerializeField]
         private Transform disabledPoolArea;
-
+        
         [Header("Prefabs")]
         [SerializeField]
         private List<PoolBehaviour> basePrefabs;
@@ -102,12 +103,12 @@ namespace JoaoSantos.General
 
         private T Create<T>(PoolAsset asset = null) where T : PoolBehaviour
         {
-            var type = typeof(T).ToString();
-            Debugs.Log(type);
+            var type = typeof(T).ToString();            
 
             var elementPrefab = this.basePrefabs.Find(prefab => prefab is T && prefab.PoolAsset.Equals(asset));
 
-            var element = Instantiate(elementPrefab, this.disabledPoolArea);
+            PoolBehaviour element = Instantiate(elementPrefab, this.disabledPoolArea);
+
             this.poolDictionary[type].Add(element);
 
             return (T)element;

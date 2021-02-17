@@ -5,13 +5,14 @@ using UnityEngine;
 using UnityEditor;
 
 using JoaoSantos.Runner3D.Asset;
+using JoaoSantos.General;
 
 namespace JoaoSantos.Runner3D.Editor
 {
     public class LevelAssetEditor
     {
         private static string LevelAssets = "LevelAssets";
-        private static string levelAssetsPath = CollectionPaths.AssetDatabaseResources + "/" + LevelAssets;
+        private static string levelAssetsPath = CollectionsPaths.AssetDatabaseResources + "/" + LevelAssets;
 
         [MenuItem("Runner3D/Level/LevelAssets", false, 0)]
         private static void CreateLevelAssets()
@@ -20,7 +21,7 @@ namespace JoaoSantos.Runner3D.Editor
 
             if (!AssetDatabase.IsValidFolder(levelAssetsPath))
             {
-                AssetDatabase.CreateFolder(CollectionPaths.AssetDatabaseResources, LevelAssets);
+                AssetDatabase.CreateFolder(CollectionsPaths.AssetDatabaseResources, LevelAssets);
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
             }

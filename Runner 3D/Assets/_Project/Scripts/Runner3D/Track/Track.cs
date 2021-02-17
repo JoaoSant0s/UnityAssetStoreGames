@@ -16,6 +16,12 @@ namespace JoaoSantos.Runner3D.WorldElement
     [Serializable]
     public class Track : PoolBehaviour
     {
+        [Header("Components")]
+        [SerializeField]
+        private SpawnCollectables spawnCollectables;
+
+        [Header("Values")]
+        
         [SerializeField]
         private float size;
 
@@ -58,6 +64,12 @@ namespace JoaoSantos.Runner3D.WorldElement
         #endregion        
 
         #region Private Methods
+
+        public override void Enable()
+        {
+            base.Enable();
+            SpawnCollectablesManager.Instance.Spawn(this.spawnCollectables);
+        }
 
         public override void Disable()
         {
