@@ -45,7 +45,6 @@ namespace JoaoSantos.Runner3D.WorldElement
 
             this.spawnNextTrackEvent.Invoke();
 
-            Debugs.Log("OnTriggerEnter", trackCounter);
             trackCounter++;
         }
 
@@ -54,8 +53,6 @@ namespace JoaoSantos.Runner3D.WorldElement
             if (other.tag != Tags.PLAYERTAG) return;
 
             this.hideTrackEvent.Invoke(this);
-
-            Debugs.Log("OnTriggerExit", trackCounter);
         }
 
         #endregion        

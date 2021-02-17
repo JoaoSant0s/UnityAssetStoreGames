@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UnityEditor;
-using JoaoSantos.General;
+using JoaoSantos.General.Asset;
 
 namespace JoaoSantos.Editor
 {
     public class PoolAssetEditor
     {
-        private static string poolAssetPath = "Assets/Resources/PoolsAssets/";
+        private static string PoolsAssets = "PoolsAssets";
+        private static string poolAssetPath = CollectionPaths.AssetDatabaseResources + "/" + PoolsAssets;
 
         [MenuItem("JoaoSant0s/Pool/PoolAsset", false, 0)]
         private static void CreatePoolAsset()
@@ -18,9 +19,11 @@ namespace JoaoSantos.Editor
 
             if (!AssetDatabase.IsValidFolder(poolAssetPath))
             {
-                AssetDatabase.CreateFolder("Resources", "PoolsAssets");
+                AssetDatabase.CreateFolder(CollectionPaths.AssetDatabaseResources, PoolsAssets);
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
             }
-
+            
             AssetDatabase.CreateAsset(asset, poolAssetPath + "/poolAsset.asset");
 
             EditorUtility.SetDirty(asset);

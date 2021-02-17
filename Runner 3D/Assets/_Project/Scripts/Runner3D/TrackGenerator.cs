@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using JoaoSantos.General;
+using JoaoSantos.General.Asset;
 using System;
 
 namespace JoaoSantos.Runner3D.WorldElement
@@ -12,9 +13,7 @@ namespace JoaoSantos.Runner3D.WorldElement
     {
         [Header("Values")]
         [SerializeField]
-        private float hidePreviouslyTrackDelay;
-        [SerializeField]
-        private PoolAsset testPoolAsset;
+        private float hidePreviouslyTrackDelay;        
 
         [SerializeField]
         private Transform trackArea;
@@ -60,6 +59,7 @@ namespace JoaoSantos.Runner3D.WorldElement
 
         private void SetLastTrigger()
         {
+            LevelSystem.Instance.SetValues();
             for (int i = 0; i < this.startTracks.Length; i++)
             {
                 SetTrackTrigger(this.startTracks[i]);
@@ -73,12 +73,16 @@ namespace JoaoSantos.Runner3D.WorldElement
         }
 
         private void OnSpawnNextTrack()
-        {            
-            var track = PoolSelector.Instance.CreateOrSpawn<Track>(this.testPoolAsset, this.trackArea);
+        {
+            if (!LevelSystem.Instance.HasAsset()) return;
+            var asset =  LevelSystem.Instance.CurrentAsset;
+
+            var track = PoolSelector.Instance.CreateOrSpawn<Track>(asset, this.trackArea);
 
             track.transform.localPosition = new Vector3(0, 0, this.nextTrackPosition);
 
             this.nextTrackPosition += track.Size;
+            LevelSystem.Instance.UpdateToNextLevel();
             SetTrackTrigger(track);
         }
 
@@ -90,7 +94,7 @@ namespace JoaoSantos.Runner3D.WorldElement
         private IEnumerator HideTrackRoutine(Track track)
         {
             yield return new WaitForSeconds(this.hidePreviouslyTrackDelay);
-            
+
             if (track.IsToDestroy)
             {
                 GameObject.Destroy(track.gameObject);
