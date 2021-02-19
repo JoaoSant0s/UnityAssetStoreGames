@@ -15,6 +15,8 @@ using JoaoSantos.General;
 
 namespace JoaoSantos.Runner3D.WorldElement
 {
+    [AlwaysSynchronizeSystem]
+    [UpdateAfter(typeof(EndFrameParentSystem))]
     public class SpawnCollectablesSystem : ComponentSystem
     {
         protected override void OnUpdate()
