@@ -6,8 +6,7 @@ using Unity.Mathematics;
 using Unity.Transforms;
 
 namespace JoaoSantos.Runner3D.WorldElement
-{
-    [AlwaysSynchronizeSystem]
+{     
     [UpdateAfter(typeof(MoveCollectableSystem))]
     public class SpinCollectableSystem : SystemBase
     {
@@ -20,6 +19,9 @@ namespace JoaoSantos.Runner3D.WorldElement
                 rotation.Value = math.mul(
                     math.normalize(rotation.Value),
                     quaternion.AxisAngle(math.up(), collectable.rotationSpeed * dt));
+                rotation.Value = math.mul(
+                    math.normalize(rotation.Value),
+                    quaternion.AxisAngle(new float3(-1,0,0), collectable.rotationSpeed * dt));
             }).ScheduleParallel();
         }
     }

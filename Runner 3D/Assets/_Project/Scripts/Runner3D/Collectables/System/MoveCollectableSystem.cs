@@ -6,9 +6,7 @@ using Unity.Mathematics;
 using Unity.Transforms;
 
 namespace JoaoSantos.Runner3D.WorldElement
-{
-    [AlwaysSynchronizeSystem]
-    [UpdateAfter(typeof(PickupCollectableSystem))]
+{    
     public class MoveCollectableSystem : SystemBase
     {
         protected override void OnUpdate()

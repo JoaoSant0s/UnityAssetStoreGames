@@ -10,56 +10,58 @@ using Unity.Physics.Systems;
 using JoaoSantos.General;
 
 namespace JoaoSantos.Runner3D.WorldElement
-{
-    [AlwaysSynchronizeSystem]
-    [UpdateAfter(typeof(SpawnCollectablesSystem))]
+{    
+    [UpdateAfter(typeof(EndFramePhysicsSystem))]
     public class PickupCollectableSystem : JobComponentSystem
     {
-        private BeginInitializationEntityCommandBufferSystem bufferSystem;
         private BuildPhysicsWorld buildPhysicsWorld;
         private StepPhysicsWorld stepPhysicsWorld;
+        private EndSimulationEntityCommandBufferSystem commandBufferSystem;
 
         protected override void OnCreate()
         {
             base.OnCreate();
-            bufferSystem = World.GetOrCreateSystem<BeginInitializationEntityCommandBufferSystem>();
             buildPhysicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>();
             stepPhysicsWorld = World.GetOrCreateSystem<StepPhysicsWorld>();
+            commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
         }
 
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
             TriggerJob triggerJob = new TriggerJob
             {
-                players = GetComponentDataFromEntity<PlayerTag>(true),
-                tracks = GetComponentDataFromEntity<TrackTag>(true),
-                entitiesToDelete = GetComponentDataFromEntity<DeleteTag>(true),
-                commandBuffer = bufferSystem.CreateCommandBuffer()
+                players = GetComponentDataFromEntity<PlayerTag>(),
+                tracks = GetComponentDataFromEntity<TrackTag>(),
+                entitiesToDelete = GetComponentDataFromEntity<DeleteTag>(),
+                entityCommandBuffer = commandBufferSystem.CreateCommandBuffer()
             };
 
-            var job = triggerJob.Schedule(stepPhysicsWorld.Simulation, ref buildPhysicsWorld.PhysicsWorld, inputDeps);
+            // triggerJob.Schedule(stepPhysicsWorld.Simulation, ref buildPhysicsWorld.PhysicsWorld, inputDeps);
 
-            job.Complete();
+            var jobHandle = triggerJob.Schedule(stepPhysicsWorld.Simulation, ref buildPhysicsWorld.PhysicsWorld, inputDeps);
 
-            return job;
+            commandBufferSystem.AddJobHandleForProducer(jobHandle);            
+
+            // jobHandle.Complete();
+
+            return jobHandle;
         }
-
+        
         private struct TriggerJob : ITriggerEventsJob
         {
             [ReadOnly]
             public ComponentDataFromEntity<PlayerTag> players;
             [ReadOnly]
             public ComponentDataFromEntity<TrackTag> tracks;
-
             [ReadOnly]
             public ComponentDataFromEntity<DeleteTag> entitiesToDelete;
 
-            public EntityCommandBuffer commandBuffer;
+            public EntityCommandBuffer entityCommandBuffer;
 
             public void Execute(TriggerEvent triggerEvent)
             {
                 EntityTrigger(triggerEvent.EntityA, triggerEvent.EntityB);
-                EntityTrigger(triggerEvent.EntityB, triggerEvent.EntityA);
+               // EntityTrigger(triggerEvent.EntityB, triggerEvent.EntityA);
             }
 
             private void EntityTrigger(Entity entityA, Entity entityB)
@@ -75,7 +77,7 @@ namespace JoaoSantos.Runner3D.WorldElement
 
                 Debugs.Log("!HasComponent", entityB);
 
-                commandBuffer.AddComponent(entityB, new DeleteTag());
+                entityCommandBuffer.AddComponent(entityB, new DeleteTag());                
             }
         }
     }

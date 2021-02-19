@@ -8,7 +8,7 @@ using Unity.Transforms;
 using JoaoSantos.General;
 
 namespace JoaoSantos.Runner3D.WorldElement
-{
+{        
     [AlwaysSynchronizeSystem]
     [UpdateAfter(typeof(PickupCollectableSystem))]
     public class DeleteEntitySystem : JobComponentSystem
