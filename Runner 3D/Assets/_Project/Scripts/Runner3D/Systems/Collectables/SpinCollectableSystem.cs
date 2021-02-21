@@ -14,7 +14,7 @@ namespace JoaoSantos.Runner3D.WorldElement
         {
             var dt = Time.DeltaTime;
 
-            Entities.ForEach((ref Rotation rotation, in CollectableComponent collectable) =>
+            Entities.ForEach((ref Rotation rotation, in CollectableComponentData collectable) =>
             {
                 rotation.Value = math.mul(
                     math.normalize(rotation.Value),

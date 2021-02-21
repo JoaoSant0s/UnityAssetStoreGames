@@ -13,7 +13,7 @@ namespace JoaoSantos.Runner3D.WorldElement
         {
             var dt = Time.DeltaTime;
 
-            Entities.ForEach((ref Translation translation, ref CollectableComponent collectable) =>
+            Entities.ForEach((ref Translation translation, ref CollectableComponentData collectable) =>
             {
                 var direction = collectable.invertDirection ? -1 : 1;
 

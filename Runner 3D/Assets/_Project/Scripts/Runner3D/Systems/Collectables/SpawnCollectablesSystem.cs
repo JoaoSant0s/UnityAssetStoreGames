@@ -14,7 +14,8 @@ using JoaoSantos.General;
 
 
 namespace JoaoSantos.Runner3D.WorldElement
-{            
+{
+    [UpdateAfter(typeof(PlayerForwardMoveSystem))]
     public class SpawnCollectablesSystem : ComponentSystem
     {
         protected override void OnUpdate()

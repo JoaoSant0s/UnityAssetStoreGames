@@ -10,24 +10,55 @@ using Unity.Physics.Systems;
 using JoaoSantos.General;
 
 namespace JoaoSantos.Runner3D.WorldElement
-{    
-    [UpdateAfter(typeof(EndFramePhysicsSystem))]
-    public class PickupCollectableSystem : JobComponentSystem
+{
+    [UpdateAfter(typeof(PlayerForwardMoveSystem))]
+    [UpdateAfter(typeof(StepPhysicsWorld))]
+    [UpdateBefore(typeof(EndFramePhysicsSystem))]
+    public class PickupCollectableSystem : SystemBase
     {
-        private BuildPhysicsWorld buildPhysicsWorld;
-        private StepPhysicsWorld stepPhysicsWorld;
+        private ExportPhysicsWorld m_ExportPhysicsWorld;
+
+        private BuildPhysicsWorld buildPhysicsWorld = default;
+        private StepPhysicsWorld stepPhysicsWorld = default;
+        private EndFramePhysicsSystem endFramePhysicsSystem = default;
         private EndSimulationEntityCommandBufferSystem commandBufferSystem;
+
+        private EntityQuery collectableQuery = default;
 
         protected override void OnCreate()
         {
             base.OnCreate();
+            m_ExportPhysicsWorld = World.GetOrCreateSystem<ExportPhysicsWorld>();
+
             buildPhysicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>();
             stepPhysicsWorld = World.GetOrCreateSystem<StepPhysicsWorld>();
+            endFramePhysicsSystem = World.GetOrCreateSystem<EndFramePhysicsSystem>();
             commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+
+            collectableQuery = GetEntityQuery(
+                new EntityQueryDesc
+                {
+                    All = new ComponentType[] { typeof(CollectableComponentData) }
+                }
+            );
         }
 
-        protected override JobHandle OnUpdate(JobHandle inputDeps)
+        protected override void OnUpdate()
         {
+            MainTrigger();
+        }
+
+        private void MainTrigger()
+        {
+            var amount = collectableQuery.CalculateEntityCount();
+
+            if (amount == 0) return;
+
+            Dependency = JobHandle.CombineDependencies(m_ExportPhysicsWorld.GetOutputDependency(), Dependency);
+            Dependency = JobHandle.CombineDependencies(stepPhysicsWorld.FinalSimulationJobHandle, Dependency);
+
+            Debugs.Log("Collectable Amount", amount);
+
             TriggerJob triggerJob = new TriggerJob
             {
                 players = GetComponentDataFromEntity<PlayerTag>(),
@@ -36,17 +67,13 @@ namespace JoaoSantos.Runner3D.WorldElement
                 entityCommandBuffer = commandBufferSystem.CreateCommandBuffer()
             };
 
-            // triggerJob.Schedule(stepPhysicsWorld.Simulation, ref buildPhysicsWorld.PhysicsWorld, inputDeps);
+            Dependency = triggerJob.Schedule(stepPhysicsWorld.Simulation, ref buildPhysicsWorld.PhysicsWorld, Dependency);
 
-            var jobHandle = triggerJob.Schedule(stepPhysicsWorld.Simulation, ref buildPhysicsWorld.PhysicsWorld, inputDeps);
+            Dependency.Complete();
 
-            commandBufferSystem.AddJobHandleForProducer(jobHandle);            
-
-            // jobHandle.Complete();
-
-            return jobHandle;
+            endFramePhysicsSystem.AddInputDependency(Dependency);
         }
-        
+
         private struct TriggerJob : ITriggerEventsJob
         {
             [ReadOnly]
@@ -61,23 +88,17 @@ namespace JoaoSantos.Runner3D.WorldElement
             public void Execute(TriggerEvent triggerEvent)
             {
                 EntityTrigger(triggerEvent.EntityA, triggerEvent.EntityB);
-               // EntityTrigger(triggerEvent.EntityB, triggerEvent.EntityA);
+                EntityTrigger(triggerEvent.EntityB, triggerEvent.EntityA);
             }
 
             private void EntityTrigger(Entity entityA, Entity entityB)
             {
-                Debugs.Log("Check", players, tracks, entitiesToDelete, entityA, entityB);
-
                 if (!players.HasComponent(entityA)) return;
                 if (tracks.HasComponent(entityB)) return;
 
-                Debugs.Log("HasComponent", entityA);
-
                 if (entitiesToDelete.HasComponent(entityB)) return;
 
-                Debugs.Log("!HasComponent", entityB);
-
-                entityCommandBuffer.AddComponent(entityB, new DeleteTag());                
+                entityCommandBuffer.AddComponent(entityB, new DeleteTag());
             }
         }
     }

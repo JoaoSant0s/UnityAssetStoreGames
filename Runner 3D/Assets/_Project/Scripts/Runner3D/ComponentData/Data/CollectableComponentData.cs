@@ -14,7 +14,7 @@ using Unity.Burst;
 namespace JoaoSantos.Runner3D.WorldElement
 {
     [GenerateAuthoringComponent]
-    public struct CollectableComponent : IComponentData
+    public struct CollectableComponentData : IComponentData
     {    
         [Header("Rotation")]
         public float rotationSpeed;
