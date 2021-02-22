@@ -48,7 +48,7 @@ namespace JoaoSantos.Runner3D.WorldElement
         {
             if (!data.CanMoveLeft) return;
 
-            data.movementIndex--;
+            data.MovementIndex--;
             translation.Value += new float3(-data.transversalMovement.movementDistance, 0, 0);
         }
 
@@ -56,7 +56,7 @@ namespace JoaoSantos.Runner3D.WorldElement
         {
             if (!data.CanMoveRight) return;
 
-            data.movementIndex++;
+            data.MovementIndex++;
             translation.Value += new float3(data.transversalMovement.movementDistance, 0, 0);
         }
     }

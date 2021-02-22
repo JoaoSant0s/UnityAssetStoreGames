@@ -18,11 +18,11 @@ namespace JoaoSantos.Runner3D.WorldElement
     [GenerateAuthoringComponent]
     public struct PlayerMovementComponentData : IComponentData
     {
-        public float limitSpeed;
-        public float jumpForce;
-
-        public float oppositeForceProportion;
+        public float speed;
+        public float maxVelocity;
+        
         public TransversalMovementData transversalMovement;
+        private int movementIndex;
 
         public bool CanMoveLeft
         {
@@ -34,7 +34,11 @@ namespace JoaoSantos.Runner3D.WorldElement
             get { return this.movementIndex <= this.transversalMovement.movementLimits.y; }
         }
 
-        public int movementIndex;
+        public int MovementIndex
+        {
+            get { return movementIndex; }
+            set { movementIndex = value; }
+        }
 
     }
     [Serializable]

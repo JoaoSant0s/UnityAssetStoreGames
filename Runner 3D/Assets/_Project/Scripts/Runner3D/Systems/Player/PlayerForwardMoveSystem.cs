@@ -14,19 +14,22 @@ namespace JoaoSantos.Runner3D.WorldElement
     {
         protected override void OnUpdate()
         {
+            var dt = Time.DeltaTime;
+
             Entities
             .WithAll<PlayerTag>()
             .WithoutBurst()
             .ForEach((ref PhysicsVelocity velocity, ref Rotation rotation, in PlayerMovementComponentData data) =>
             {
-                ApplyForwardMovement(ref velocity, in data);
+                ApplyForwardMovement(ref velocity, dt,  in data);
                 ResetRotation(ref rotation);
             }).Run();
         }
 
-        private void ApplyForwardMovement(ref PhysicsVelocity velocity, in PlayerMovementComponentData data)
-        {
-            velocity.Linear = new float3(0, 0, data.limitSpeed);
+        private void ApplyForwardMovement(ref PhysicsVelocity velocity, float dt, in PlayerMovementComponentData data)
+        {            
+            if(velocity.Linear.z >= data.maxVelocity ) return;
+            velocity.Linear += new float3(0, 0, data.speed * dt);
         }
 
         private void ResetRotation(ref Rotation rotation)
