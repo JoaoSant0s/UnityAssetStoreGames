@@ -21,21 +21,14 @@ namespace JoaoSantos.Runner3D.WorldElement
             .WithoutBurst()
             .ForEach((ref PhysicsVelocity velocity, ref Rotation rotation, in PlayerMovementComponentData data) =>
             {
-                ApplyForwardMovement(ref velocity, dt,  in data);
-                ResetRotation(ref rotation);
+                ApplyForwardMovement(ref velocity, dt, in data);
             }).Run();
         }
 
         private void ApplyForwardMovement(ref PhysicsVelocity velocity, float dt, in PlayerMovementComponentData data)
-        {            
-            if(velocity.Linear.z >= data.maxVelocity ) return;
+        {
+            if (velocity.Linear.z >= data.maxVelocity) return;
             velocity.Linear += new float3(0, 0, data.speed * dt);
         }
-
-        private void ResetRotation(ref Rotation rotation)
-        {
-            rotation.Value = quaternion.Euler(0, 0, 0);
-        }
-
     }
 }

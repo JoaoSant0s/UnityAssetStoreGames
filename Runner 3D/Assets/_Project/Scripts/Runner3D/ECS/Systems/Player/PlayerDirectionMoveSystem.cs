@@ -22,15 +22,9 @@ namespace JoaoSantos.Runner3D.WorldElement
            .WithoutBurst()
            .ForEach((ref Translation translation, ref Rotation rotation, ref PlayerMovementComponentData data) =>
            {
-               PlayerMovementTrigger(ref translation, ref data);
-               ResetRotation(ref rotation);
+               PlayerMovementTrigger(ref translation, ref data);               
            }).Run();
-        }
-
-        private void ResetRotation(ref Rotation rotation)
-        {
-            rotation.Value = quaternion.Euler(0, 0, 0);
-        }
+        }        
 
         private void PlayerMovementTrigger(ref Translation translation, ref PlayerMovementComponentData data)
         {
@@ -49,7 +43,7 @@ namespace JoaoSantos.Runner3D.WorldElement
             if (!data.CanMoveLeft) return;
 
             data.MovementIndex--;
-            translation.Value += new float3(-data.transversalMovement.movementDistance, 0, 0);
+            translation.Value += new float3(-data.movementDistance, 0, 0);
         }
 
         private void MoveRight(ref Translation translation, ref PlayerMovementComponentData data)
@@ -57,7 +51,7 @@ namespace JoaoSantos.Runner3D.WorldElement
             if (!data.CanMoveRight) return;
 
             data.MovementIndex++;
-            translation.Value += new float3(data.transversalMovement.movementDistance, 0, 0);
+            translation.Value += new float3(data.movementDistance, 0, 0);
         }
     }
 }

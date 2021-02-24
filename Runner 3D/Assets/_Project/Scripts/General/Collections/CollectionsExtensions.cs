@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+//using UnityEngine;
+
+using Unity.Mathematics;
 
 namespace JoaoSantos.General
 {
@@ -13,8 +15,10 @@ namespace JoaoSantos.General
             List<T> newList = new List<T>();
 
             while (copyList.Count > 0)
-            {
-                var index = Random.Range(0, copyList.Count);
+            {     
+                var ran = new Random();
+                
+                var index = ran.NextInt(0, copyList.Count);
                 var item = copyList[index];
 
                 newList.Add(item);
@@ -33,12 +37,16 @@ namespace JoaoSantos.General
 
         public static T GetRandomItem<T>(this T[] list)
         {
-            return list[Random.Range(0, list.Length)];
+            var ran = new Random();
+
+            return list[ran.NextInt(0, list.Length)];
         }
 
         public static T GetRandomItem<T>(this List<T> list)
         {
-            return list[Random.Range(0, list.Count)];
+            var ran = new Random();
+
+            return list[ran.NextInt(0, list.Count)];
         }
     }
 }

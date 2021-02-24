@@ -72,7 +72,7 @@ namespace JoaoSantos.Runner3D.WorldElement
             track.hideTrackEvent.AddListener(OnHideTrack);
         }
 
-        private void OnSpawnNextTrack()
+        public void OnSpawnNextTrack()
         {
             if (!LevelSystem.Instance.HasAsset()) return;
             var asset =  LevelSystem.Instance.CurrentAsset;
@@ -86,7 +86,7 @@ namespace JoaoSantos.Runner3D.WorldElement
             SetTrackTrigger(track);
         }
 
-        private void OnHideTrack(Track track)
+        public void OnHideTrack(Track track)
         {
             StartCoroutine(HideTrackRoutine(track));
         }

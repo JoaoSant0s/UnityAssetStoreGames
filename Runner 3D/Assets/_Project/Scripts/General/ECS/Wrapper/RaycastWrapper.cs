@@ -16,6 +16,12 @@ using Unity.Physics.Extensions;
 
 namespace JoaoSantos.General
 {
+
+    public struct RaycastHitTuple
+    {
+        public RaycastHit raycastHit;
+        public bool collided;
+    }
     public static class RaycastWrapper
     {
         [BurstCompile]
@@ -23,17 +29,17 @@ namespace JoaoSantos.General
         {
             [ReadOnly] public CollisionWorld world;
             [ReadOnly] public NativeArray<RaycastInput> inputs;
-            public NativeArray<RaycastHit> results;
+            public NativeArray<RaycastHitTuple> results;
 
             public unsafe void Execute(int index)
             {
                 RaycastHit hit;
-                world.CastRay(inputs[index], out hit);
-                results[index] = hit;
+                var collided = world.CastRay(inputs[index], out hit);
+                results[index] = new RaycastHitTuple { raycastHit = hit, collided = collided };
             }
         }
 
-        public static JobHandle ScheduleBatchRayCast(CollisionWorld world, NativeArray<RaycastInput> inputs, NativeArray<RaycastHit> results)
+        public static JobHandle ScheduleBatchRayCast(CollisionWorld world, NativeArray<RaycastInput> inputs, NativeArray<RaycastHitTuple> results)
         {
             JobHandle rcj = new RaycastJob
             {
@@ -45,15 +51,15 @@ namespace JoaoSantos.General
             return rcj;
         }
 
-        public static void SingleRayCast(CollisionWorld world, RaycastInput input, ref RaycastHit result)
+        public static void SingleRayCast(CollisionWorld world, RaycastInput input, ref RaycastHitTuple result)
         {
-            var rayCommands = new NativeArray<RaycastInput>(1, Allocator.TempJob);
-            var rayResults = new NativeArray<RaycastHit>(1, Allocator.TempJob);
-            rayCommands[0] = input;
-            var handle = ScheduleBatchRayCast(world, rayCommands, rayResults);
+            var rayInputs = new NativeArray<RaycastInput>(1, Allocator.TempJob);
+            var rayResults = new NativeArray<RaycastHitTuple>(1, Allocator.TempJob);
+            rayInputs[0] = input;
+            var handle = ScheduleBatchRayCast(world, rayInputs, rayResults);
             handle.Complete();
             result = rayResults[0];
-            rayCommands.Dispose();
+            rayInputs.Dispose();
             rayResults.Dispose();
         }
     }
