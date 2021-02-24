@@ -25,7 +25,7 @@ namespace JoaoSantos.Runner3D.WorldElement
         public float2 movementLimits;
         private int movementIndex;
 
-        #region Propertu Method
+        #region Property Methods
 
         public bool CanMoveLeft
         {

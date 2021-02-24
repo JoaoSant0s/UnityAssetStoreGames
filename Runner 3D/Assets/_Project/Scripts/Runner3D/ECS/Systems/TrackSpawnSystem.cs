@@ -16,14 +16,16 @@ namespace JoaoSantos.Runner3D.WorldElement
     [UpdateBefore(typeof(EndFramePhysicsSystem))]
     public class TrackSpawnSystem : SystemBase
     {
+        #region Systems
+
         private ExportPhysicsWorld m_ExportPhysicsWorld;
         private BuildPhysicsWorld buildPhysicsWorld = default;
         private StepPhysicsWorld stepPhysicsWorld = default;
         private EndFramePhysicsSystem endFramePhysicsSystem = default;
-
         private EndSimulationEntityCommandBufferSystem commandBufferSystem;
 
-
+        #endregion
+        
         private EntityQuery trackQuery = default;
 
         protected override void OnCreate()
@@ -57,7 +59,7 @@ namespace JoaoSantos.Runner3D.WorldElement
             if (amount == 0) return;
 
             Dependency = JobHandle.CombineDependencies(m_ExportPhysicsWorld.GetOutputDependency(), Dependency);
-            Dependency = JobHandle.CombineDependencies(stepPhysicsWorld.FinalSimulationJobHandle, Dependency);            
+            Dependency = JobHandle.CombineDependencies(stepPhysicsWorld.FinalSimulationJobHandle, Dependency);
 
             TriggerJob triggerJob = new TriggerJob
             {

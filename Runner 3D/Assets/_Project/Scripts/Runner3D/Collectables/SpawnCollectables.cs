@@ -9,10 +9,14 @@ namespace JoaoSantos.Runner3D.WorldElement
         [SerializeField]
         private List<Transform> spawnCollectablePoints;
 
+        #region Property Methods
+
         public List<Transform> SpawnCollectablePoints
         {
             get { return this.spawnCollectablePoints; }
         }
+
+        #endregion
 
         public void Spawn()
         {

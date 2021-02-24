@@ -18,6 +18,8 @@ namespace JoaoSantos.Runner3D.WorldElement
 
         private int loopsCount;
 
+        #region Property Methods
+
         private List<LevelOptions> LevelSequence
         {
             get { return this.levelAsset.LevelSequence; }
@@ -27,6 +29,8 @@ namespace JoaoSantos.Runner3D.WorldElement
         {
             get { return LevelSequence[this.index].GetRandomAsset; }
         }
+
+        #endregion
 
         public void SetValues()
         {

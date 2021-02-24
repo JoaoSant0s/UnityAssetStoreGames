@@ -16,19 +16,22 @@ namespace JoaoSantos.Runner3D.WorldElement
     [UpdateBefore(typeof(EndFramePhysicsSystem))]
     public class PickupCollectableSystem : SystemBase
     {
-        private ExportPhysicsWorld m_ExportPhysicsWorld;
+        #region Systems
 
+        private ExportPhysicsWorld exportPhysicsWorld = default;
         private BuildPhysicsWorld buildPhysicsWorld = default;
         private StepPhysicsWorld stepPhysicsWorld = default;
         private EndFramePhysicsSystem endFramePhysicsSystem = default;
         private EndSimulationEntityCommandBufferSystem commandBufferSystem;
+
+        #endregion
 
         private EntityQuery collectableQuery = default;
 
         protected override void OnCreate()
         {
             base.OnCreate();
-            m_ExportPhysicsWorld = World.GetOrCreateSystem<ExportPhysicsWorld>();
+            exportPhysicsWorld = World.GetOrCreateSystem<ExportPhysicsWorld>();
 
             buildPhysicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>();
             stepPhysicsWorld = World.GetOrCreateSystem<StepPhysicsWorld>();
@@ -54,7 +57,7 @@ namespace JoaoSantos.Runner3D.WorldElement
 
             if (amount == 0) return;
 
-            Dependency = JobHandle.CombineDependencies(m_ExportPhysicsWorld.GetOutputDependency(), Dependency);
+            Dependency = JobHandle.CombineDependencies(exportPhysicsWorld.GetOutputDependency(), Dependency);
             Dependency = JobHandle.CombineDependencies(stepPhysicsWorld.FinalSimulationJobHandle, Dependency);
 
             Debugs.Log("Collectable Amount", amount);

@@ -15,17 +15,21 @@ using Unity.Burst;
 
 using Unity.Physics;
 using Unity.Physics.Authoring;
+using JoaoSantos.General;
 
 namespace JoaoSantos.General
 {
-    [Serializable]
-    public class CollisionFilterDescription
+    [GenerateAuthoringComponent]
+    public struct CollisionFilterComponentData : IComponentData
     {
         public PhysicsCategoryTags belongsTo;
 
         public PhysicsCategoryTags collidesWith;
 
         public int groupIndex;
+
+        #region Property Methods
+
 
         public uint BelongsToValue
         {
@@ -36,5 +40,7 @@ namespace JoaoSantos.General
         {
             get { return collidesWith.Value; }
         }
+
+        #endregion
     }
 }

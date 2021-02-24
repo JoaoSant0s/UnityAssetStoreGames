@@ -13,6 +13,8 @@ namespace JoaoSantos.General
 
         private bool active;
 
+        #region Property Methods
+
         public bool Active
         {
             get { return this.active; }
@@ -23,6 +25,8 @@ namespace JoaoSantos.General
             get { return this.poolAsset; }
             set { this.poolAsset = value; }
         }
+
+        #endregion
         public virtual void Disable()
         {
             gameObject.SetActive(false);

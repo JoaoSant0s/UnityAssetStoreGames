@@ -33,6 +33,8 @@ namespace JoaoSantos.Runner3D.WorldElement
 
         public static int trackCounter;
 
+        #region Property Methods
+
         public float Size
         {
             get { return this.size; }
@@ -42,6 +44,8 @@ namespace JoaoSantos.Runner3D.WorldElement
         {
             get { return this.isToDestroy; }
         }
+
+        #endregion
 
         #region Unity Methods
 

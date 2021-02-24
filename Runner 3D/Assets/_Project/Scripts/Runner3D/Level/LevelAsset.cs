@@ -12,10 +12,14 @@ namespace JoaoSantos.Runner3D.Asset
     {
         public PoolAsset[] options;
 
+        #region Property Methods
+
         public PoolAsset GetRandomAsset
         {
             get { return this.options.GetRandomItem(); }
         }
+
+        #endregion
     }
     [CreateAssetMenu(fileName = "PoolAsset", menuName = "Runner3D/Level/LevelAsset", order = 0)]
     public class LevelAsset : ScriptableObject

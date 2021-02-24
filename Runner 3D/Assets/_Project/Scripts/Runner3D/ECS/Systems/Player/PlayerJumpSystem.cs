@@ -35,40 +35,45 @@ namespace JoaoSantos.Runner3D.WorldElement
             Entities
             .WithAll<PlayerTag>()
             .WithoutBurst()
-            .ForEach((ref PhysicsVelocity velocity, ref Translation translation, ref Rotation rotation, in PlayerJumpComponentData playerJumpData) =>
+            .ForEach((ref PhysicsVelocity velocity, ref Translation translation, ref PlayerJumpComponentData playerJumpData, in CollisionFilterComponentData collisionFilterData) =>
             {
-                Jump(ref velocity, ref translation, in playerJumpData);
+                Jump(ref velocity, ref translation, ref playerJumpData, in collisionFilterData);
+
+                ResetJumpUpdate(ref playerJumpData);
             }).Run();
         }
 
-        private void Jump(ref PhysicsVelocity velocity, ref Translation translation, in PlayerJumpComponentData playerJumpData)
+        #region Private Methods
+
+        private void Jump(ref PhysicsVelocity velocity, ref Translation translation, ref PlayerJumpComponentData playerJumpData, in CollisionFilterComponentData collisionFilterData)
         {
             if (!Input.GetKeyUp(KeyCode.Space)) return;
 
             var startPosition = translation.Value;
             var endPosition = startPosition + playerJumpData.raycastJumpOffset;
 
-            if (!CheckPossibleJump(startPosition, endPosition, in playerJumpData)) return;
+            if (!CheckRayCastPossibleJump(startPosition, endPosition, ref playerJumpData, in collisionFilterData) || playerJumpData.Jumping) return;
+
+            playerJumpData.Jumping = true;
+            playerJumpData.StartJumpTime = UnityEngine.Time.time;
 
             float3 linearImpulse = new float3(0, playerJumpData.jumpForce, 0);
 
             ApplyImpulse(ref velocity, linearImpulse);
         }
 
-        private bool CheckPossibleJump(float3 rayFrom, float3 rayTo, in PlayerJumpComponentData data)
+        private bool CheckRayCastPossibleJump(float3 rayFrom, float3 rayTo, ref PlayerJumpComponentData playerJumpData, in CollisionFilterComponentData collisionFilterData)
         {
             var collisionWorld = buildPhysicsWorld.PhysicsWorld.CollisionWorld;
-
-            var collisionFilterDescription = data.collisionFilterDescription;
 
             Unity.Physics.RaycastInput input = new Unity.Physics.RaycastInput()
             {
                 Start = rayFrom,
                 End = rayTo,
                 Filter = {
-                    BelongsTo = collisionFilterDescription.BelongsToValue,
-                    CollidesWith = collisionFilterDescription.CollidesWithValue,
-                    GroupIndex = collisionFilterDescription.groupIndex
+                    BelongsTo = collisionFilterData.BelongsToValue,
+                    CollidesWith = collisionFilterData.CollidesWithValue,
+                    GroupIndex = collisionFilterData.groupIndex
                 }
             };
 
@@ -78,6 +83,16 @@ namespace JoaoSantos.Runner3D.WorldElement
 
             return hit.collided;
         }
+
+        private void ResetJumpUpdate(ref PlayerJumpComponentData playerJumpData)
+        {
+            if (!playerJumpData.Jumping) return;
+
+            if (UnityEngine.Time.time - playerJumpData.StartJumpTime < playerJumpData.resetJumpDelay) return;
+            playerJumpData.Jumping = false;
+        }
+
+        #endregion
 
         public static void ApplyImpulse(ref PhysicsVelocity pv, float3 impulse)
         {
