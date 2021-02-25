@@ -5,7 +5,7 @@ using UnityEngine;
 using Unity.Entities;
 
 namespace JoaoSantos.General
-{    
+{
     [GenerateAuthoringComponent]
     public struct PrefabEntity : IComponentData
     {

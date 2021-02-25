@@ -105,7 +105,7 @@ namespace JoaoSantos.Runner3D.WorldElement
 
                 entityCommandBuffer.AddComponent(entityB, new TrackTriggeredTag());
 
-                //TrackGenerator.Instance.OnSpawnNextTrack();                
+              //  TrackGenerator.Instance.OnSpawnNextTrack();                
             }
         }
     }

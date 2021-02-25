@@ -21,6 +21,8 @@ namespace JoaoSantos.Runner3D.WorldElement
             .WithoutBurst()
             .ForEach((ref PhysicsVelocity velocity, ref Rotation rotation, in PlayerMovementComponentData data) =>
             {
+                if (!data.isForwardMoving) return;
+
                 ApplyForwardMovement(ref velocity, dt, in data);
             }).Run();
         }

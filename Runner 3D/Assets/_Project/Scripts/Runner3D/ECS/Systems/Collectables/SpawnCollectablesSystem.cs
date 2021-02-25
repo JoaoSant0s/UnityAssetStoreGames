@@ -12,40 +12,62 @@ using Unity.Burst;
 
 using JoaoSantos.General;
 
+using UnityEngine;
 
 namespace JoaoSantos.Runner3D.WorldElement
 {
     [UpdateAfter(typeof(PlayerForwardMoveSystem))]
-    public class SpawnCollectablesSystem : ComponentSystem
+    [UpdateBefore(typeof(TrackSpawnSystem))]
+    public class SpawnCollectablesSystem : SystemBase
     {
+        private EntityQuery collectablePointQuery = default;
+
+        protected override void OnCreate()
+        {
+            collectablePointQuery = GetEntityQuery(typeof(Translation), typeof(CollectablePointTag), typeof(CollectablePointSharedData));
+
+            collectablePointQuery.SetSharedComponentFilter(new CollectablePointSharedData() { spawned = false });
+        }
+
         protected override void OnUpdate()
         {
-            if (!SpawnCollectablesManager.Instance.HasSpawnStack()) return;
-
             SpawnCollectables();
         }
 
         private void SpawnCollectables()
         {
-            var spawn = SpawnCollectablesManager.Instance.GetSpawn();
+            var size = collectablePointQuery.CalculateEntityCount();
+            Debug.Log(size);
 
-            Entities.ForEach((ref PrefabEntity prefabEntity) =>
+            if (size == 0) return;
+
+            Entities
+            .WithStructuralChanges()
+            .ForEach((ref PrefabEntity prefabEntity) =>
             {
                 var collectableEntity = prefabEntity.collectablePrefab;
 
-                var points = spawn.SpawnCollectablePoints;
-
-                NativeArray<Entity> nativeArray = new NativeArray<Entity>(points.Count, Allocator.Temp);
+                NativeArray<Entity> nativeArray = new NativeArray<Entity>(size, Allocator.Temp);
                 EntityManager.Instantiate(collectableEntity, nativeArray);
 
-                for (int i = 0; i < points.Count; i++)
+                var entities = collectablePointQuery.ToEntityArray(Allocator.TempJob);
+
+                for (int i = 0; i < size; i++)
                 {
-                    EntityManager.SetComponentData<Translation>(nativeArray[i], new Translation { Value = points[i].position });
+                    var entity = entities[i];
+
+                    Translation point = EntityManager.GetComponentData<Translation>(entity);
+
+                    Debugs.Log(entity, point.Value);
+
+                    EntityManager.SetComponentData<Translation>(nativeArray[i], point);
+                    EntityManager.SetSharedComponentData<CollectablePointSharedData>(entity, new CollectablePointSharedData() { spawned = true });
                 }
 
                 nativeArray.Dispose();
+                entities.Dispose();
 
-            });
+            }).Run();
         }
     }
 }

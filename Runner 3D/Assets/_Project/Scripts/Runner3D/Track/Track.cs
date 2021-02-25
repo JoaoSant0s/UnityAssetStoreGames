@@ -21,7 +21,7 @@ namespace JoaoSantos.Runner3D.WorldElement
         private SpawnCollectables spawnCollectables;
 
         [Header("Values")]
-        
+
         [SerializeField]
         private float size;
 
@@ -63,11 +63,11 @@ namespace JoaoSantos.Runner3D.WorldElement
             if (other.tag != Tags.PLAYERTAG) return;
 
             this.hideTrackEvent.Invoke(this);
-        }
+        }        
 
-        #endregion        
+        #endregion 
 
-        #region Private Methods
+        #region Public Methods
 
         public override void Enable()
         {
@@ -80,6 +80,10 @@ namespace JoaoSantos.Runner3D.WorldElement
             RemoveEvents();
             base.Disable();
         }
+
+        #endregion       
+
+        #region Private Methods
 
         private void RemoveEvents()
         {

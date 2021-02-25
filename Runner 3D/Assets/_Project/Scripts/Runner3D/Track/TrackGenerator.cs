@@ -77,6 +77,8 @@ namespace JoaoSantos.Runner3D.WorldElement
             if (!LevelSystem.Instance.HasAsset()) return;
             var asset =  LevelSystem.Instance.CurrentAsset;
 
+            //TODO
+
             var track = PoolSelector.Instance.CreateOrSpawn<Track>(asset, this.trackArea);
 
             track.transform.localPosition = new Vector3(0, 0, this.nextTrackPosition);

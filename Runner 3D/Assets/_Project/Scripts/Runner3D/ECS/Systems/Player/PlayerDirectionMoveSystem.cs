@@ -22,9 +22,10 @@ namespace JoaoSantos.Runner3D.WorldElement
            .WithoutBurst()
            .ForEach((ref Translation translation, ref Rotation rotation, ref PlayerMovementComponentData data) =>
            {
-               PlayerMovementTrigger(ref translation, ref data);               
+               if (!data.isDirectionMoving) return;
+               PlayerMovementTrigger(ref translation, ref data);
            }).Run();
-        }        
+        }
 
         private void PlayerMovementTrigger(ref Translation translation, ref PlayerMovementComponentData data)
         {
