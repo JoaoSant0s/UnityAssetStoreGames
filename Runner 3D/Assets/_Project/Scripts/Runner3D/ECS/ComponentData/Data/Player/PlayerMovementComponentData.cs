@@ -18,9 +18,11 @@ namespace JoaoSantos.Runner3D.WorldElement
     [GenerateAuthoringComponent]
     public struct PlayerMovementComponentData : IComponentData
     {
+        [Header("Moves")]
+        public bool enableForwardMove;
+        public bool enableDirectionMove;
+
         [Header("Values")]
-        public bool isForwardMoving;
-        public bool isDirectionMoving;
         public float speed;
         public float maxVelocity;
         public float movementDistance;

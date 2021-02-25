@@ -17,7 +17,7 @@ using UnityEngine;
 namespace JoaoSantos.Runner3D.WorldElement
 {
     [UpdateAfter(typeof(PlayerForwardMoveSystem))]
-    [UpdateBefore(typeof(TrackSpawnSystem))]
+    [UpdateBefore(typeof(SpawnTrackSystem))]
     public class SpawnCollectablesSystem : SystemBase
     {
         private EntityQuery collectablePointQuery = default;
@@ -37,9 +37,10 @@ namespace JoaoSantos.Runner3D.WorldElement
         private void SpawnCollectables()
         {
             var size = collectablePointQuery.CalculateEntityCount();
-            Debug.Log(size);
 
             if (size == 0) return;
+
+            Debugs.Log("Instantiate collectable amount", size);
 
             Entities
             .WithStructuralChanges()
@@ -47,8 +48,8 @@ namespace JoaoSantos.Runner3D.WorldElement
             {
                 var collectableEntity = prefabEntity.collectablePrefab;
 
-                NativeArray<Entity> nativeArray = new NativeArray<Entity>(size, Allocator.Temp);
-                EntityManager.Instantiate(collectableEntity, nativeArray);
+                NativeArray<Entity> instancesArray = new NativeArray<Entity>(size, Allocator.Temp);
+                EntityManager.Instantiate(collectableEntity, instancesArray);
 
                 var entities = collectablePointQuery.ToEntityArray(Allocator.TempJob);
 
@@ -56,15 +57,14 @@ namespace JoaoSantos.Runner3D.WorldElement
                 {
                     var entity = entities[i];
 
-                    Translation point = EntityManager.GetComponentData<Translation>(entity);
+                    LocalToWorld world = EntityManager.GetComponentData<LocalToWorld>(entity);
 
-                    Debugs.Log(entity, point.Value);
+                    EntityManager.UpdateTranslationComponentData(instancesArray[i], world.Position);
 
-                    EntityManager.SetComponentData<Translation>(nativeArray[i], point);
                     EntityManager.SetSharedComponentData<CollectablePointSharedData>(entity, new CollectablePointSharedData() { spawned = true });
                 }
 
-                nativeArray.Dispose();
+                instancesArray.Dispose();
                 entities.Dispose();
 
             }).Run();

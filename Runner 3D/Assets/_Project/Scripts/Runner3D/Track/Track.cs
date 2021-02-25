@@ -63,9 +63,9 @@ namespace JoaoSantos.Runner3D.WorldElement
             if (other.tag != Tags.PLAYERTAG) return;
 
             this.hideTrackEvent.Invoke(this);
-        }        
+        }
 
-        #endregion 
+        #endregion
 
         #region Public Methods
 

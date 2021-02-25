@@ -14,10 +14,9 @@ namespace JoaoSantos.Runner3D.WorldElement
     [UpdateAfter(typeof(PlayerForwardMoveSystem))]
     [UpdateAfter(typeof(StepPhysicsWorld))]
     [UpdateBefore(typeof(EndFramePhysicsSystem))]
-    public class TrackSpawnSystem : SystemBase
+    public class SpawnTrackSystem : SystemBase
     {
         #region Systems
-
         private ExportPhysicsWorld m_ExportPhysicsWorld;
         private BuildPhysicsWorld buildPhysicsWorld = default;
         private StepPhysicsWorld stepPhysicsWorld = default;
@@ -25,7 +24,7 @@ namespace JoaoSantos.Runner3D.WorldElement
         private EndSimulationEntityCommandBufferSystem commandBufferSystem;
 
         #endregion
-        
+
         private EntityQuery trackQuery = default;
 
         protected override void OnCreate()
@@ -38,13 +37,7 @@ namespace JoaoSantos.Runner3D.WorldElement
             endFramePhysicsSystem = World.GetOrCreateSystem<EndFramePhysicsSystem>();
             commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
 
-
-            trackQuery = GetEntityQuery(
-                new EntityQueryDesc
-                {
-                    All = new ComponentType[] { typeof(TrackTag) }
-                }
-            );
+            trackQuery = GetEntityQuery(typeof(TrackTag));
         }
 
         protected override void OnUpdate()
@@ -105,7 +98,9 @@ namespace JoaoSantos.Runner3D.WorldElement
 
                 entityCommandBuffer.AddComponent(entityB, new TrackTriggeredTag());
 
-              //  TrackGenerator.Instance.OnSpawnNextTrack();                
+                Debugs.Log(entityB, "TrackTriggeredTag");
+
+                //  TrackGenerator.Instance.OnSpawnNextTrack();                
             }
         }
     }

@@ -58,9 +58,7 @@ namespace JoaoSantos.Runner3D.WorldElement
             if (amount == 0) return;
 
             Dependency = JobHandle.CombineDependencies(exportPhysicsWorld.GetOutputDependency(), Dependency);
-            Dependency = JobHandle.CombineDependencies(stepPhysicsWorld.FinalSimulationJobHandle, Dependency);
-
-            Debugs.Log("Collectable Amount", amount);
+            Dependency = JobHandle.CombineDependencies(stepPhysicsWorld.FinalSimulationJobHandle, Dependency);            
 
             TriggerJob triggerJob = new TriggerJob
             {

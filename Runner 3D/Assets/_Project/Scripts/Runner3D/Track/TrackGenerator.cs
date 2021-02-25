@@ -13,7 +13,7 @@ namespace JoaoSantos.Runner3D.WorldElement
     {
         [Header("Values")]
         [SerializeField]
-        private float hidePreviouslyTrackDelay;        
+        private float hidePreviouslyTrackDelay;
 
         [SerializeField]
         private Transform trackArea;
@@ -21,10 +21,13 @@ namespace JoaoSantos.Runner3D.WorldElement
         #region Local Variable        
 
         private float nextTrackPosition;
+        private float nextYPosition;
 
         private Track[] startTracks;
 
         #endregion
+
+        private const float yPosition = -0.1f;
 
         #region  Unity Methods
 
@@ -54,7 +57,9 @@ namespace JoaoSantos.Runner3D.WorldElement
             for (int i = 0; i < this.startTracks.Length; i++)
             {
                 this.nextTrackPosition += this.startTracks[i].Size;
+                this.nextYPosition += yPosition;
             }
+            Debugs.Log(this.nextTrackPosition, this.nextYPosition);
         }
 
         private void SetLastTrigger()
@@ -75,15 +80,17 @@ namespace JoaoSantos.Runner3D.WorldElement
         public void OnSpawnNextTrack()
         {
             if (!LevelSystem.Instance.HasAsset()) return;
-            var asset =  LevelSystem.Instance.CurrentAsset;
+            var asset = LevelSystem.Instance.CurrentAsset;
 
             //TODO
 
             var track = PoolSelector.Instance.CreateOrSpawn<Track>(asset, this.trackArea);
 
-            track.transform.localPosition = new Vector3(0, 0, this.nextTrackPosition);
+            track.transform.localPosition = new Vector3(0, this.nextYPosition, this.nextTrackPosition);
 
             this.nextTrackPosition += track.Size;
+            this.nextYPosition += yPosition;
+
             LevelSystem.Instance.UpdateToNextLevel();
             SetTrackTrigger(track);
         }

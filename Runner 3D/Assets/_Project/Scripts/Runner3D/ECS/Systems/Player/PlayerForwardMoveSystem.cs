@@ -8,6 +8,8 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using Unity.Physics;
 
+using JoaoSantos.General;
+
 namespace JoaoSantos.Runner3D.WorldElement
 {
     public class PlayerForwardMoveSystem : SystemBase
@@ -21,9 +23,11 @@ namespace JoaoSantos.Runner3D.WorldElement
             .WithoutBurst()
             .ForEach((ref PhysicsVelocity velocity, ref Rotation rotation, in PlayerMovementComponentData data) =>
             {
-                if (!data.isForwardMoving) return;
+                if (!data.enableForwardMove) return;
 
-                ApplyForwardMovement(ref velocity, dt, in data);
+                ApplyForwardMovement(ref velocity, dt, in data);                
+
+                rotation.FreezeRotation();
             }).Run();
         }
 
