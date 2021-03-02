@@ -11,97 +11,78 @@ using JoaoSantos.General;
 
 namespace JoaoSantos.Runner3D.WorldElement
 {
-    [UpdateAfter(typeof(PlayerForwardMoveSystem))]
-    [UpdateAfter(typeof(StepPhysicsWorld))]
-    [UpdateBefore(typeof(EndFramePhysicsSystem))]
+    [AlwaysSynchronizeSystem]
+    [UpdateAfter(typeof(TriggerTrackSystem))]
     public class SpawnTrackSystem : SystemBase
     {
-        #region Systems
-        private ExportPhysicsWorld m_ExportPhysicsWorld;
-        private BuildPhysicsWorld buildPhysicsWorld = default;
-        private StepPhysicsWorld stepPhysicsWorld = default;
-        private EndFramePhysicsSystem endFramePhysicsSystem = default;
-        private EndSimulationEntityCommandBufferSystem commandBufferSystem;
+        private const float trackYOffsetPosition = -0.1f;
 
-        #endregion
+        private EntityQuery triggedEntityQuery = default;
 
-        private EntityQuery trackQuery = default;
+        private float nextTrackPosition = default;
+        private float nextYPosition = default;
+
+        #region Unity Methods
 
         protected override void OnCreate()
         {
             base.OnCreate();
-            m_ExportPhysicsWorld = World.GetOrCreateSystem<ExportPhysicsWorld>();
+            triggedEntityQuery = GetEntityQuery(typeof(TrackTriggeredTag));
+        }
 
-            buildPhysicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>();
-            stepPhysicsWorld = World.GetOrCreateSystem<StepPhysicsWorld>();
-            endFramePhysicsSystem = World.GetOrCreateSystem<EndFramePhysicsSystem>();
-            commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+        protected override void OnStartRunning()
+        {
+            base.OnStartRunning();
 
-            trackQuery = GetEntityQuery(typeof(TrackTag));
+            CalculateNextTrackPosition();
         }
 
         protected override void OnUpdate()
         {
-            MainTrigger();
+            if (!LevelManager.Instance.HasAsset()) return;
+
+            var querySize = triggedEntityQuery.CalculateEntityCount();
+
+            if (querySize == 0) return;
+
+            var asset = LevelManager.Instance.CurrentAsset;
+            Debugs.Log("TrackTriggeredTag", querySize, asset);
+
+            //Get Level Track
+            // Entity trackPrefab = default;
+
+            // NativeArray<Entity> instancesArray = new NativeArray<Entity>(1, Allocator.Temp);
+            // EntityManager.Instantiate(trackPrefab, instancesArray);
+
+            // var trackEntity = instancesArray[0];
+
+            // var trackData = EntityManager.GetComponentData<TrackComponentData>(trackEntity);
+            // float3 position = new float3(0, this.nextYPosition, this.nextTrackPosition);
+            // EntityManager.UpdateTranslationComponentData(trackEntity, position);
+
+            // this.nextYPosition += trackYOffsetPosition;
+            // this.nextTrackPosition += trackData.size;
+
+            // instancesArray.Dispose();        
         }
 
-        private void MainTrigger()
+        #endregion
+
+        #region Private Methods
+
+        private void CalculateNextTrackPosition()
         {
-            var amount = trackQuery.CalculateEntityCount();
+            Entities
+                .WithoutBurst()
+                .ForEach((ref TrackComponentData track) =>
+                {
+                    this.nextTrackPosition += track.size;
+                    this.nextYPosition += trackYOffsetPosition;
+                }).Run();
 
-            if (amount == 0) return;
-
-            Dependency = JobHandle.CombineDependencies(m_ExportPhysicsWorld.GetOutputDependency(), Dependency);
-            Dependency = JobHandle.CombineDependencies(stepPhysicsWorld.FinalSimulationJobHandle, Dependency);
-
-            TriggerJob triggerJob = new TriggerJob
-            {
-                players = GetComponentDataFromEntity<PlayerTag>(),
-                tracks = GetComponentDataFromEntity<TrackTag>(),
-                entitiesTriggered = GetComponentDataFromEntity<TrackTriggeredTag>(),
-
-                entityCommandBuffer = commandBufferSystem.CreateCommandBuffer()
-            };
-
-            Dependency = triggerJob.Schedule(stepPhysicsWorld.Simulation, ref buildPhysicsWorld.PhysicsWorld, Dependency);
-
-            Dependency.Complete();
-
-            endFramePhysicsSystem.AddInputDependency(Dependency);
+            Debugs.Log("Direct", this.nextTrackPosition, this.nextYPosition);
         }
 
-        private struct TriggerJob : ITriggerEventsJob
-        {
-            [ReadOnly]
-            public ComponentDataFromEntity<PlayerTag> players;
-            [ReadOnly]
-            public ComponentDataFromEntity<TrackTag> tracks;
-
-            [ReadOnly]
-            public ComponentDataFromEntity<TrackTriggeredTag> entitiesTriggered;
-
-            public EntityCommandBuffer entityCommandBuffer;
-
-
-            public void Execute(TriggerEvent triggerEvent)
-            {
-                EntityTrigger(triggerEvent.EntityA, triggerEvent.EntityB);
-                EntityTrigger(triggerEvent.EntityB, triggerEvent.EntityA);
-            }
-
-            private void EntityTrigger(Entity entityA, Entity entityB)
-            {
-                if (!players.HasComponent(entityA)) return;
-                if (!tracks.HasComponent(entityB)) return;
-
-                if (entitiesTriggered.HasComponent(entityB)) return;
-
-                entityCommandBuffer.AddComponent(entityB, new TrackTriggeredTag());
-
-                Debugs.Log(entityB, "TrackTriggeredTag");
-
-                //  TrackGenerator.Instance.OnSpawnNextTrack();                
-            }
-        }
+        #endregion
     }
 }

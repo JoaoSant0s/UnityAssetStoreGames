@@ -59,12 +59,12 @@ namespace JoaoSantos.Runner3D.WorldElement
                 this.nextTrackPosition += this.startTracks[i].Size;
                 this.nextYPosition += yPosition;
             }
-            Debugs.Log(this.nextTrackPosition, this.nextYPosition);
+           // Debugs.Log(this.nextTrackPosition, this.nextYPosition);
         }
 
         private void SetLastTrigger()
         {
-            LevelSystem.Instance.SetValues();
+            LevelManager.Instance.SetValues();
             for (int i = 0; i < this.startTracks.Length; i++)
             {
                 SetTrackTrigger(this.startTracks[i]);
@@ -79,10 +79,8 @@ namespace JoaoSantos.Runner3D.WorldElement
 
         public void OnSpawnNextTrack()
         {
-            if (!LevelSystem.Instance.HasAsset()) return;
-            var asset = LevelSystem.Instance.CurrentAsset;
-
-            //TODO
+            if (!LevelManager.Instance.HasAsset()) return;
+            var asset = LevelManager.Instance.CurrentAsset;            
 
             var track = PoolSelector.Instance.CreateOrSpawn<Track>(asset, this.trackArea);
 
@@ -91,7 +89,7 @@ namespace JoaoSantos.Runner3D.WorldElement
             this.nextTrackPosition += track.Size;
             this.nextYPosition += yPosition;
 
-            LevelSystem.Instance.UpdateToNextLevel();
+            LevelManager.Instance.UpdateToNextLevel();
             SetTrackTrigger(track);
         }
 

@@ -565,6 +565,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1135043238930222648}
   - component: {fileID: 2646638222952569312}
+  - component: {fileID: 2578515928484121961}
   - component: {fileID: 4851886593466695763}
   - component: {fileID: 3237350607976892238}
   - component: {fileID: 2319233031846011069}
@@ -607,6 +608,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82b7ccdab69ef044a8acf15013e55eb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2578515928484121961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135043238930222651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82470f77da7933740980a634a16fd36c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: 100
 --- !u!114 &4851886593466695763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -622,7 +636,6 @@ MonoBehaviour:
   poolAsset: {fileID: 11400000, guid: 97d32df2177d1354f8da7f3ae3975a2e, type: 2}
   spawnCollectables: {fileID: 6139877440691098440}
   size: 100
-  yOffset: -0.1
   isToDestroy: 0
   spawnNextTrackEvent:
     m_PersistentCalls:

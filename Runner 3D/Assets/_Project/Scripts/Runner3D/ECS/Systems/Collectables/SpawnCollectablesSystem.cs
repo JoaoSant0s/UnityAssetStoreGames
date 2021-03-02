@@ -17,14 +17,14 @@ using UnityEngine;
 namespace JoaoSantos.Runner3D.WorldElement
 {
     [UpdateAfter(typeof(PlayerForwardMoveSystem))]
-    [UpdateBefore(typeof(SpawnTrackSystem))]
+    [UpdateBefore(typeof(TriggerTrackSystem))]
     public class SpawnCollectablesSystem : SystemBase
     {
         private EntityQuery collectablePointQuery = default;
 
         protected override void OnCreate()
         {
-            collectablePointQuery = GetEntityQuery(typeof(Translation), typeof(CollectablePointTag), typeof(CollectablePointSharedData));
+            collectablePointQuery = GetEntityQuery(typeof(CollectablePointTag), typeof(CollectablePointSharedData));
 
             collectablePointQuery.SetSharedComponentFilter(new CollectablePointSharedData() { spawned = false });
         }

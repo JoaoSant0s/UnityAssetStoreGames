@@ -9,7 +9,7 @@ using JoaoSantos.Runner3D.Asset;
 
 namespace JoaoSantos.Runner3D.WorldElement
 {
-    public class LevelSystem : SingletonBehaviour<LevelSystem>
+    public class LevelManager : SingletonBehaviour<LevelManager>
     {
         [SerializeField]
         private LevelAsset levelAsset;
