@@ -5,8 +5,10 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
 
+using JoaoSantos.General;
+
 namespace JoaoSantos.Runner3D.WorldElement
-{    
+{
     public class MoveCollectableSystem : SystemBase
     {
         protected override void OnUpdate()
@@ -15,6 +17,8 @@ namespace JoaoSantos.Runner3D.WorldElement
 
             Entities.ForEach((ref Translation translation, ref CollectableComponentData collectable) =>
             {
+                var startY = collectable.StartPosition.y;
+
                 var direction = collectable.invertDirection ? -1 : 1;
 
                 var value = translation.Value.y;
@@ -22,15 +26,15 @@ namespace JoaoSantos.Runner3D.WorldElement
 
                 var result = value + incremental;
 
-                if (result < collectable.moveYLimit.x)
+                if (result < collectable.moveYLimit.x + startY)
                 {
                     collectable.invertDirection = false;
-                    result = collectable.moveYLimit.x;
+                    result = collectable.moveYLimit.x + startY;
                 }
-                else if (result > collectable.moveYLimit.y)
+                else if (result > collectable.moveYLimit.y + startY)
                 {
                     collectable.invertDirection = true;
-                    result = collectable.moveYLimit.y;
+                    result = collectable.moveYLimit.y + startY;
                 }
 
                 translation.Value.y = result;

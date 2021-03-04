@@ -16,13 +16,14 @@ using Unity.Burst;
 using Unity.Physics;
 using Unity.Physics.Authoring;
 using JoaoSantos.General;
+using JoaoSantos.General.Asset;
 
 namespace JoaoSantos.Runner3D.WorldElement
 {
     [GenerateAuthoringComponent]
     public struct TrackComponentData : IComponentData
-    {        
+    {
+        public int id;
         public float size;
-
     }
 }

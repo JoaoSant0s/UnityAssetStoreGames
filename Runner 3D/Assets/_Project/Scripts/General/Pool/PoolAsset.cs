@@ -6,11 +6,13 @@ namespace JoaoSantos.General.Asset
 {
     public class PoolAsset : ScriptableObject
     {
-        public string id;
+        public int id;        
 
-        public bool Equals(PoolAsset obj)
-        {            
-            return obj.id.Equals(id);
+        public override string ToString()
+        {
+            var value = "id: " + this.id;
+            return value;
+
         }
     }
 }

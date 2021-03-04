@@ -46,28 +46,41 @@ namespace JoaoSantos.Runner3D.WorldElement
             .WithStructuralChanges()
             .ForEach((ref PrefabEntity prefabEntity) =>
             {
-                var collectableEntity = prefabEntity.collectablePrefab;
+                var collectablePrefab = prefabEntity.collectablePrefab;
 
                 NativeArray<Entity> instancesArray = new NativeArray<Entity>(size, Allocator.Temp);
-                EntityManager.Instantiate(collectableEntity, instancesArray);
+                EntityManager.Instantiate(collectablePrefab, instancesArray);
 
                 var entities = collectablePointQuery.ToEntityArray(Allocator.TempJob);
 
                 for (int i = 0; i < size; i++)
                 {
-                    var entity = entities[i];
+                    var entityPoint = entities[i];
+                    var collectableInstance = instancesArray[i];
 
-                    LocalToWorld world = EntityManager.GetComponentData<LocalToWorld>(entity);
+                    LocalToWorld world = EntityManager.GetComponentData<LocalToWorld>(entityPoint);
 
-                    EntityManager.UpdateTranslationComponentData(instancesArray[i], world.Position);
+                    EntityManager.UpdateTranslationComponentData(collectableInstance, world.Position);
 
-                    EntityManager.SetSharedComponentData<CollectablePointSharedData>(entity, new CollectablePointSharedData() { spawned = true });
+                    SetStartLocalPosition(collectableInstance);
+
+                    EntityManager.SetSharedComponentData<CollectablePointSharedData>(entityPoint, new CollectablePointSharedData() { spawned = true });
                 }
 
                 instancesArray.Dispose();
                 entities.Dispose();
 
             }).Run();
+        }
+
+        private void SetStartLocalPosition(Entity entity)
+        {
+            var collectable = EntityManager.GetComponentData<CollectableComponentData>(entity);
+            var translation = EntityManager.GetComponentData<Translation>(entity);
+
+            collectable.StartPosition = translation.Value;
+
+            EntityManager.SetComponentData<CollectableComponentData>(entity, collectable);
         }
     }
 }

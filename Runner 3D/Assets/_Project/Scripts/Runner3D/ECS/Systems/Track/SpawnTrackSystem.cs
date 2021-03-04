@@ -27,7 +27,9 @@ namespace JoaoSantos.Runner3D.WorldElement
         protected override void OnCreate()
         {
             base.OnCreate();
-            triggedEntityQuery = GetEntityQuery(typeof(TrackTriggeredTag));
+            triggedEntityQuery = GetEntityQuery(typeof(TrackTriggeredTag), typeof(TrackTriggeredSharedData));
+
+            triggedEntityQuery.SetSharedComponentFilter(new TrackTriggeredSharedData() { actived = false });
         }
 
         protected override void OnStartRunning()
@@ -45,25 +47,34 @@ namespace JoaoSantos.Runner3D.WorldElement
 
             if (querySize == 0) return;
 
+            var triggers = triggedEntityQuery.ToEntityArray(Allocator.TempJob);
+
+            EntityManager.SetSharedComponentData<TrackTriggeredSharedData>(triggers[0], new TrackTriggeredSharedData() { actived = true });
+
             var asset = LevelManager.Instance.CurrentAsset;
-            Debugs.Log("TrackTriggeredTag", querySize, asset);
 
-            //Get Level Track
-            // Entity trackPrefab = default;
+            Entity trackPrefab = TrackGenerator.Instance.GetTrackPrefab(asset);
 
-            // NativeArray<Entity> instancesArray = new NativeArray<Entity>(1, Allocator.Temp);
-            // EntityManager.Instantiate(trackPrefab, instancesArray);
+            NativeArray<Entity> instancesArray = new NativeArray<Entity>(1, Allocator.Temp);
+            EntityManager.Instantiate(trackPrefab, instancesArray);
 
-            // var trackEntity = instancesArray[0];
+            var trackEntity = instancesArray[0];
 
-            // var trackData = EntityManager.GetComponentData<TrackComponentData>(trackEntity);
-            // float3 position = new float3(0, this.nextYPosition, this.nextTrackPosition);
-            // EntityManager.UpdateTranslationComponentData(trackEntity, position);
+            var trackData = EntityManager.GetComponentData<TrackComponentData>(trackEntity);
 
-            // this.nextYPosition += trackYOffsetPosition;
-            // this.nextTrackPosition += trackData.size;
+            this.nextYPosition += trackYOffsetPosition;
+            this.nextTrackPosition += trackData.size;
 
-            // instancesArray.Dispose();        
+            float3 position = new float3(0, this.nextYPosition, this.nextTrackPosition);
+
+            Debugs.Log("position", trackEntity, position);
+
+            EntityManager.UpdateTranslationComponentData(trackEntity, position);
+
+            instancesArray.Dispose();
+            triggers.Dispose();
+
+            LevelManager.Instance.UpdateToNextLevel();
         }
 
         #endregion
@@ -74,13 +85,14 @@ namespace JoaoSantos.Runner3D.WorldElement
         {
             Entities
                 .WithoutBurst()
-                .ForEach((ref TrackComponentData track) =>
+                .ForEach((Entity entity, ref TrackComponentData track) =>
                 {
-                    this.nextTrackPosition += track.size;
-                    this.nextYPosition += trackYOffsetPosition;
-                }).Run();
+                    LocalToWorld world = EntityManager.GetComponentData<LocalToWorld>(entity);
+                    var position = world.Position;
 
-            Debugs.Log("Direct", this.nextTrackPosition, this.nextYPosition);
+                    this.nextYPosition = position.y;
+                    this.nextTrackPosition = position.z;
+                }).Run();
         }
 
         #endregion

@@ -96,6 +96,7 @@ namespace JoaoSantos.Runner3D.WorldElement
                 if (entitiesTriggered.HasComponent(entityB)) return;
 
                 entityCommandBuffer.AddComponent(entityB, new TrackTriggeredTag());
+                entityCommandBuffer.AddSharedComponent(entityB, new TrackTriggeredSharedData());
             }
         }
     }

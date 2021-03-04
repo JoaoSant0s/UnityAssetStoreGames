@@ -30,13 +30,7 @@ namespace JoaoSantos.Runner3D.WorldElement
             get { return LevelSequence[this.index].GetRandomAsset; }
         }
 
-        #endregion
-
-        public void SetValues()
-        {
-            this.loopsCount = this.levelAsset.Loops;
-            this.index = 0;
-        }
+        #endregion       
 
         public bool HasAsset()
         {
@@ -45,8 +39,7 @@ namespace JoaoSantos.Runner3D.WorldElement
 
         public void UpdateToNextLevel()
         {
-            this.index++;
-            Debug.Log(this.index);
+            this.index++;            
 
             if (HasAsset()) return;
 

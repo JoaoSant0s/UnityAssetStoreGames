@@ -7,109 +7,56 @@ using JoaoSantos.General;
 using JoaoSantos.General.Asset;
 using System;
 
+using Unity.Burst;
+using Unity.Collections;
+using Unity.Entities;
+using Unity.Jobs;
+using Unity.Mathematics;
+using Unity.Transforms;
+using Unity.Physics;
+using Unity.Physics.Systems;
+
 namespace JoaoSantos.Runner3D.WorldElement
 {
-    public class TrackGenerator : SingletonBehaviour<TrackGenerator>
+    [DisallowMultipleComponent]
+
+    public class TrackGenerator : SingletonBehaviour<TrackGenerator>, IConvertGameObjectToEntity, IDeclareReferencedPrefabs
     {
-        [Header("Values")]
+        [Header("Prefabs")]
         [SerializeField]
-        private float hidePreviouslyTrackDelay;
+        private List<GameObject> basePrefabs;
 
-        [SerializeField]
-        private Transform trackArea;
+        private List<Entity> entitiesPrefabs;
 
-        #region Local Variable        
+        #region  Unity Methods        
 
-        private float nextTrackPosition;
-        private float nextYPosition;
-
-        private Track[] startTracks;
-
-        #endregion
-
-        private const float yPosition = -0.1f;
-
-        #region  Unity Methods
-
-        protected override void Awake()
+        public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
-            base.Awake();
-            InitVariables();
-        }
-
-        private void Start()
-        {
-            CalculateNextTrackPosition();
-            SetLastTrigger();
-        }
-
-        #endregion
-
-        #region Private Methods
-
-        private void InitVariables()
-        {
-            this.startTracks = trackArea.GetComponentsInChildren<Track>();
-        }
-
-        private void CalculateNextTrackPosition()
-        {
-            for (int i = 0; i < this.startTracks.Length; i++)
+            this.entitiesPrefabs = new List<Entity>();
+            for (int i = 0; i < basePrefabs.Count; i++)
             {
-                this.nextTrackPosition += this.startTracks[i].Size;
-                this.nextYPosition += yPosition;
-            }
-           // Debugs.Log(this.nextTrackPosition, this.nextYPosition);
+                var prefab = basePrefabs[i];
+                Entity entityPrefab = conversionSystem.GetPrimaryEntity(prefab);
+                this.entitiesPrefabs.Add(entityPrefab);
+            }            
         }
 
-        private void SetLastTrigger()
+        public void DeclareReferencedPrefabs(List<GameObject> referencedPrefabs)
         {
-            LevelManager.Instance.SetValues();
-            for (int i = 0; i < this.startTracks.Length; i++)
+            referencedPrefabs.AddRange(basePrefabs);
+        }
+
+        public Entity GetTrackPrefab(PoolAsset asset)
+        {
+            var entityPrefab = entitiesPrefabs.Find(entity =>
             {
-                SetTrackTrigger(this.startTracks[i]);
-            }
-        }
+                var contains = ECSWrapper.EntityManager.HasComponent<TrackComponentData>(entity);
+                if (!contains) return false;
 
-        private void SetTrackTrigger(Track track)
-        {
-            track.spawnNextTrackEvent.AddListener(OnSpawnNextTrack);
-            track.hideTrackEvent.AddListener(OnHideTrack);
-        }
-
-        public void OnSpawnNextTrack()
-        {
-            if (!LevelManager.Instance.HasAsset()) return;
-            var asset = LevelManager.Instance.CurrentAsset;            
-
-            var track = PoolSelector.Instance.CreateOrSpawn<Track>(asset, this.trackArea);
-
-            track.transform.localPosition = new Vector3(0, this.nextYPosition, this.nextTrackPosition);
-
-            this.nextTrackPosition += track.Size;
-            this.nextYPosition += yPosition;
-
-            LevelManager.Instance.UpdateToNextLevel();
-            SetTrackTrigger(track);
-        }
-
-        public void OnHideTrack(Track track)
-        {
-            StartCoroutine(HideTrackRoutine(track));
-        }
-
-        private IEnumerator HideTrackRoutine(Track track)
-        {
-            yield return new WaitForSeconds(this.hidePreviouslyTrackDelay);
-
-            if (track.IsToDestroy)
-            {
-                GameObject.Destroy(track.gameObject);
-            }
-            else
-            {
-                track.Disable();
-            }
+                var value = ECSWrapper.EntityManager.GetComponentData<TrackComponentData>(entity);
+                return value.id == asset.id;
+            });
+            return entityPrefab;
         }
 
         #endregion

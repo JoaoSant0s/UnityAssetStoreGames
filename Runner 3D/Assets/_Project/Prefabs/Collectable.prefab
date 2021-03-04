@@ -51,8 +51,8 @@ MonoBehaviour:
   moveSpeed: 0.5
   invertDirection: 0
   moveYLimit:
-    x: -1.5
-    y: -1
+    x: 1.25
+    y: 2
 --- !u!114 &6311875712555236438
 MonoBehaviour:
   m_ObjectHideFlags: 0

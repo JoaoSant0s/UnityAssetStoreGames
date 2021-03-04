@@ -10,7 +10,13 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using Unity.Physics;
 
-namespace JoaoSantos.Runner3D.WorldElement
+namespace JoaoSantos.General
 {
-    public struct CollectablePointTag : IComponentData { }
+    public class ECSWrapper
+    {
+        public static EntityManager EntityManager
+        {
+            get { return World.DefaultGameObjectInjectionWorld.EntityManager; }
+        }
+    }
 }

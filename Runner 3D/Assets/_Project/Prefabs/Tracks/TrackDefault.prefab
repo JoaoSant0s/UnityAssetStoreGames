@@ -566,7 +566,6 @@ GameObject:
   - component: {fileID: 1135043238930222648}
   - component: {fileID: 2646638222952569312}
   - component: {fileID: 2578515928484121961}
-  - component: {fileID: 4851886593466695763}
   - component: {fileID: 3237350607976892238}
   - component: {fileID: 2319233031846011069}
   - component: {fileID: 7408193726894492745}
@@ -620,29 +619,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82470f77da7933740980a634a16fd36c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
   size: 100
---- !u!114 &4851886593466695763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1135043238930222651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 279a83a6c31360f46b60dd1e4cfbb173, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  poolAsset: {fileID: 11400000, guid: 97d32df2177d1354f8da7f3ae3975a2e, type: 2}
-  spawnCollectables: {fileID: 6139877440691098440}
-  size: 100
-  isToDestroy: 0
-  spawnNextTrackEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  hideTrackEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &3237350607976892238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -655,7 +633,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ConversionMode: 1
+  ConversionMode: 0
 --- !u!114 &2319233031846011069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1329,7 +1307,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4146613586658723162}
-  - component: {fileID: 6139877440691098440}
   m_Layer: 0
   m_Name: SpawnCollectable
   m_TagString: Untagged
@@ -1357,22 +1334,3 @@ Transform:
   m_Father: {fileID: 1135043238930222648}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6139877440691098440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7691096456065521862}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5eb6844318d00e4fa4fea28d5dd7114, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnCollectablePoints:
-  - {fileID: 3062460548543283909}
-  - {fileID: 307369393509712050}
-  - {fileID: 329023326789619720}
-  - {fileID: 5494289990331512509}
-  - {fileID: 3261387084087527694}
-  - {fileID: 5727393805162014538}

@@ -15,7 +15,7 @@ namespace JoaoSantos.Runner3D.WorldElement
 {
     [GenerateAuthoringComponent]
     public struct CollectableComponentData : IComponentData
-    {    
+    {
         [Header("Rotation")]
         public float rotationSpeed;
 
@@ -23,5 +23,13 @@ namespace JoaoSantos.Runner3D.WorldElement
         public float moveSpeed;
         public bool invertDirection;
         public float2 moveYLimit;
+
+        private float3 startPosition;
+
+        public float3 StartPosition
+        {
+            get { return this.startPosition; }
+            set { this.startPosition = value; }
+        }
     }
 }

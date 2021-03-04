@@ -12,5 +12,8 @@ using Unity.Physics;
 
 namespace JoaoSantos.Runner3D.WorldElement
 {
-    public struct CollectablePointTag : IComponentData { }
+    public struct TrackTriggeredSharedData : ISharedComponentData
+    {
+        public bool actived;
+    }
 }
