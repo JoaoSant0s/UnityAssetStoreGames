@@ -40,8 +40,6 @@ namespace JoaoSantos.Runner3D.WorldElement
 
             if (size == 0) return;
 
-            Debugs.Log("Instantiate collectable amount", size);
-
             Entities
             .WithStructuralChanges()
             .ForEach((ref PrefabEntity prefabEntity) =>
@@ -60,7 +58,7 @@ namespace JoaoSantos.Runner3D.WorldElement
 
                     LocalToWorld world = EntityManager.GetComponentData<LocalToWorld>(entityPoint);
 
-                    EntityManager.UpdateTranslationComponentData(collectableInstance, world.Position);
+                    EntityManager.UpdateTranslationComponentData(collectableInstance, world.Position);                    
 
                     SetStartLocalPosition(collectableInstance);
 

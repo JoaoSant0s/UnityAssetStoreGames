@@ -8,7 +8,7 @@ using Unity.Transforms;
 using JoaoSantos.General;
 
 namespace JoaoSantos.Runner3D.WorldElement
-{        
+{
     [AlwaysSynchronizeSystem]
     [UpdateAfter(typeof(PickupCollectableSystem))]
     public class DeleteEntitySystem : JobComponentSystem
@@ -17,11 +17,14 @@ namespace JoaoSantos.Runner3D.WorldElement
         {
             EntityCommandBuffer commandBuffer = new EntityCommandBuffer(Allocator.TempJob);
 
+            var elapsedTime = Time.ElapsedTime;
+
             Entities
-                .WithAll<DeleteTag>()
-                .ForEach((Entity entity) =>
+                .ForEach((Entity entity, DeleteComponent deleted) =>
                 {
-                    commandBuffer.DestroyEntity(entity);
+                    if (elapsedTime - deleted.startTime < deleted.delay) return;
+
+                    commandBuffer.DestroyEntity(entity);                    
                 }).Run();
 
             commandBuffer.Playback(EntityManager);

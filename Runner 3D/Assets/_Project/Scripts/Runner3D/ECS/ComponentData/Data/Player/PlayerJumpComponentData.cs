@@ -28,7 +28,7 @@ namespace JoaoSantos.Runner3D.WorldElement
         public float resetJumpDelay;
 
         private bool jumping;
-        private float startJumpTime;
+        private double startJumpTime;
 
         #region Property Methods
 
@@ -38,7 +38,7 @@ namespace JoaoSantos.Runner3D.WorldElement
             set { jumping = value; }
         }
 
-        public float StartJumpTime
+        public double StartJumpTime
         {
             get { return startJumpTime; }
             set { startJumpTime = value; }

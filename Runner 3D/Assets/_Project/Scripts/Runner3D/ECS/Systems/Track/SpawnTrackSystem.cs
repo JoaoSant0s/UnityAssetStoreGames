@@ -15,7 +15,7 @@ namespace JoaoSantos.Runner3D.WorldElement
     [UpdateAfter(typeof(TriggerTrackSystem))]
     public class SpawnTrackSystem : SystemBase
     {
-        private const float trackYOffsetPosition = -0.1f;
+        private const float trackYOffsetPosition = 0f;
 
         private EntityQuery triggedEntityQuery = default;
 
@@ -40,7 +40,7 @@ namespace JoaoSantos.Runner3D.WorldElement
         }
 
         protected override void OnUpdate()
-        {
+        {            
             if (!LevelManager.Instance.HasAsset()) return;
 
             var querySize = triggedEntityQuery.CalculateEntityCount();
@@ -48,8 +48,13 @@ namespace JoaoSantos.Runner3D.WorldElement
             if (querySize == 0) return;
 
             var triggers = triggedEntityQuery.ToEntityArray(Allocator.TempJob);
+            var mainTrigger = triggers[0];
 
-            EntityManager.SetSharedComponentData<TrackTriggeredSharedData>(triggers[0], new TrackTriggeredSharedData() { actived = true });
+            EntityManager.SetSharedComponentData<TrackTriggeredSharedData>(mainTrigger, new TrackTriggeredSharedData() { actived = true });
+            EntityManager.AddComponentData<DeleteComponent>(mainTrigger, new DeleteComponent(){
+                delay = 3f,
+                startTime = Time.ElapsedTime
+            });
 
             var asset = LevelManager.Instance.CurrentAsset;
 

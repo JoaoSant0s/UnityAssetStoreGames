@@ -58,14 +58,15 @@ namespace JoaoSantos.Runner3D.WorldElement
             if (amount == 0) return;
 
             Dependency = JobHandle.CombineDependencies(exportPhysicsWorld.GetOutputDependency(), Dependency);
-            Dependency = JobHandle.CombineDependencies(stepPhysicsWorld.FinalSimulationJobHandle, Dependency);            
+            Dependency = JobHandle.CombineDependencies(stepPhysicsWorld.FinalSimulationJobHandle, Dependency);
 
             TriggerJob triggerJob = new TriggerJob
             {
                 players = GetComponentDataFromEntity<PlayerTag>(),
                 tracks = GetComponentDataFromEntity<TrackTag>(),
-                entitiesToDelete = GetComponentDataFromEntity<DeleteTag>(),
-                entityCommandBuffer = commandBufferSystem.CreateCommandBuffer()
+                entitiesToDelete = GetComponentDataFromEntity<DeleteComponent>(),
+                entityCommandBuffer = commandBufferSystem.CreateCommandBuffer(),
+                elapsedTime = Time.ElapsedTime
             };
 
             Dependency = triggerJob.Schedule(stepPhysicsWorld.Simulation, ref buildPhysicsWorld.PhysicsWorld, Dependency);
@@ -82,7 +83,9 @@ namespace JoaoSantos.Runner3D.WorldElement
             [ReadOnly]
             public ComponentDataFromEntity<TrackTag> tracks;
             [ReadOnly]
-            public ComponentDataFromEntity<DeleteTag> entitiesToDelete;
+            public ComponentDataFromEntity<DeleteComponent> entitiesToDelete;
+            [ReadOnly]
+            public double elapsedTime;
 
             public EntityCommandBuffer entityCommandBuffer;
 
@@ -99,7 +102,7 @@ namespace JoaoSantos.Runner3D.WorldElement
 
                 if (entitiesToDelete.HasComponent(entityB)) return;
 
-                entityCommandBuffer.AddComponent(entityB, new DeleteTag());
+                entityCommandBuffer.AddComponent(entityB, new DeleteComponent() { startTime = elapsedTime });
             }
         }
     }

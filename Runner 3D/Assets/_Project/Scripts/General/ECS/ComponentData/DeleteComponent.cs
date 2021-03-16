@@ -14,8 +14,9 @@ using Unity.Burst;
 namespace JoaoSantos.General
 {
     [GenerateAuthoringComponent]
-    public struct DeleteTag : IComponentData
+    public struct DeleteComponent : IComponentData
     {
-        
+        public float delay;
+        public double startTime;
     }
 }

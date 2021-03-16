@@ -46,6 +46,8 @@ namespace JoaoSantos.Runner3D.WorldElement
             referencedPrefabs.AddRange(basePrefabs);
         }
 
+        #endregion
+
         public Entity GetTrackPrefab(PoolAsset asset)
         {
             var entityPrefab = entitiesPrefabs.Find(entity =>
@@ -59,6 +61,5 @@ namespace JoaoSantos.Runner3D.WorldElement
             return entityPrefab;
         }
 
-        #endregion
     }
 }

@@ -55,7 +55,7 @@ namespace JoaoSantos.Runner3D.WorldElement
             if (!CheckRayCastPossibleJump(startPosition, endPosition, ref playerJumpData, in collisionFilterData) || playerJumpData.Jumping) return;
 
             playerJumpData.Jumping = true;
-            playerJumpData.StartJumpTime = UnityEngine.Time.time;
+            playerJumpData.StartJumpTime = Time.ElapsedTime;
 
             float3 linearImpulse = new float3(0, playerJumpData.jumpForce, 0);
 
@@ -88,7 +88,7 @@ namespace JoaoSantos.Runner3D.WorldElement
         {
             if (!playerJumpData.Jumping) return;
 
-            if (UnityEngine.Time.time - playerJumpData.StartJumpTime < playerJumpData.resetJumpDelay) return;
+            if (Time.ElapsedTime - playerJumpData.StartJumpTime < playerJumpData.resetJumpDelay) return;
             playerJumpData.Jumping = false;
         }
 
