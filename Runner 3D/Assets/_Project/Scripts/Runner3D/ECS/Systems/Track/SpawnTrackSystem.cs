@@ -13,7 +13,7 @@ namespace JoaoSantos.Runner3D.WorldElement
 {
     [AlwaysSynchronizeSystem]
     [UpdateAfter(typeof(TriggerTrackSystem))]
-    public class SpawnTrackSystem : SystemBase
+    public class SpawnTrackSystem : JobComponentSystem
     {
         private const float trackYOffsetPosition = 0f;
 
@@ -39,13 +39,13 @@ namespace JoaoSantos.Runner3D.WorldElement
             CalculateNextTrackPosition();
         }
 
-        protected override void OnUpdate()
+        protected override JobHandle OnUpdate(JobHandle inputDeps)
         {            
-            if (!LevelManager.Instance.HasAsset()) return;
+            if (!LevelManager.Instance.HasAsset()) return default;
 
             var querySize = triggedEntityQuery.CalculateEntityCount();
 
-            if (querySize == 0) return;
+            if (querySize == 0) return default;
 
             var triggers = triggedEntityQuery.ToEntityArray(Allocator.TempJob);
             var mainTrigger = triggers[0];
@@ -80,6 +80,8 @@ namespace JoaoSantos.Runner3D.WorldElement
             triggers.Dispose();
 
             LevelManager.Instance.UpdateToNextLevel();
+
+            return default;
         }
 
         #endregion

@@ -16,9 +16,10 @@ using UnityEngine;
 
 namespace JoaoSantos.Runner3D.WorldElement
 {
+    [AlwaysSynchronizeSystem]
     [UpdateAfter(typeof(PlayerForwardMoveSystem))]
     [UpdateBefore(typeof(TriggerTrackSystem))]
-    public class SpawnCollectablesSystem : SystemBase
+    public class SpawnCollectablesSystem : JobComponentSystem
     {
         private EntityQuery collectablePointQuery = default;
 
@@ -29,9 +30,10 @@ namespace JoaoSantos.Runner3D.WorldElement
             collectablePointQuery.SetSharedComponentFilter(new CollectablePointSharedData() { spawned = false });
         }
 
-        protected override void OnUpdate()
+        protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
             SpawnCollectables();
+            return default;
         }
 
         private void SpawnCollectables()
