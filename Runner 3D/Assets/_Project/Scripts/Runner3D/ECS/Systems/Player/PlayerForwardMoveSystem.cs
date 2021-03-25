@@ -12,9 +12,11 @@ using JoaoSantos.General;
 
 namespace JoaoSantos.Runner3D.WorldElement
 {
-    public class PlayerForwardMoveSystem : SystemBase
+    [AlwaysSynchronizeSystem]
+    public class PlayerForwardMoveSystem : JobComponentSystem
     {
-        protected override void OnUpdate()
+
+        protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
             var dt = Time.DeltaTime;
 
@@ -25,16 +27,24 @@ namespace JoaoSantos.Runner3D.WorldElement
             {
                 if (!data.enableForwardMove) return;
 
-                ApplyForwardMovement(ref velocity, dt, in data);                
+                ApplyForwardMovement(ref velocity, dt, in data);
 
                 rotation.FreezeRotation();
             }).Run();
-        }
+            
+            return default;
+        }        
 
         private void ApplyForwardMovement(ref PhysicsVelocity velocity, float dt, in PlayerMovementComponentData data)
         {
-            if (velocity.Linear.z >= data.maxVelocity) return;
-            velocity.Linear += new float3(0, 0, data.speed * dt);
+            var zVelocity = velocity.Linear.z + data.speed * dt;
+
+            if (zVelocity > data.maxVelocity)
+            {
+                zVelocity = data.maxVelocity;
+            }
+
+            velocity.Linear.z = zVelocity;
         }
     }
 }

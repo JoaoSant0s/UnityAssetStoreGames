@@ -8,6 +8,8 @@ using JoaoSantos.General;
 
 namespace JoaoSantos.Editor
 {
+
+#if UNITY_EDITOR
     public class PoolAssetEditor
     {
         private static string PoolsAssets = "PoolsAssets";
@@ -32,4 +34,6 @@ namespace JoaoSantos.Editor
             AssetDatabase.Refresh();
         }
     }
+#endif
+
 }

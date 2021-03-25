@@ -153,7 +153,7 @@ PrefabInstance:
     - target: {fileID: 3413172547698020394, guid: 3b70f1a4ca52eed4887f9146d84cf874,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.2
       objectReference: {fileID: 0}
     - target: {fileID: 3413172547698020394, guid: 3b70f1a4ca52eed4887f9146d84cf874,
         type: 3}
@@ -711,7 +711,7 @@ PrefabInstance:
     - target: {fileID: 1135043238930222648, guid: bda850dc1e9812847bbdd3309e243dbb,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 1135043238930222648, guid: bda850dc1e9812847bbdd3309e243dbb,
         type: 3}
@@ -1017,7 +1017,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableForwardMove: 1
   enableDirectionMove: 1
-  speed: 2
+  speed: 5
   maxVelocity: 15
   movementDistance: 6
   movementLimits:

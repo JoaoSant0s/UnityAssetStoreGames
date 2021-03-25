@@ -9,6 +9,8 @@ using JoaoSantos.General;
 
 namespace JoaoSantos.Runner3D.Editor
 {
+
+#if UNITY_EDITOR
     public class LevelAssetEditor
     {
         private static string LevelAssets = "LevelAssets";
@@ -33,4 +35,6 @@ namespace JoaoSantos.Runner3D.Editor
             AssetDatabase.Refresh();
         }
     }
+#endif
+
 }

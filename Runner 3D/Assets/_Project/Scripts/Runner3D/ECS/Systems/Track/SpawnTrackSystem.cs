@@ -15,7 +15,7 @@ namespace JoaoSantos.Runner3D.WorldElement
     [UpdateAfter(typeof(TriggerTrackSystem))]
     public class SpawnTrackSystem : JobComponentSystem
     {
-        private const float trackYOffsetPosition = 0f;
+        private const float trackYOffsetPosition = -0.1f;
 
         private EntityQuery triggedEntityQuery = default;
 
@@ -40,7 +40,7 @@ namespace JoaoSantos.Runner3D.WorldElement
         }
 
         protected override JobHandle OnUpdate(JobHandle inputDeps)
-        {            
+        {
             if (!LevelManager.Instance.HasAsset()) return default;
 
             var querySize = triggedEntityQuery.CalculateEntityCount();
@@ -51,7 +51,8 @@ namespace JoaoSantos.Runner3D.WorldElement
             var mainTrigger = triggers[0];
 
             EntityManager.SetSharedComponentData<TrackTriggeredSharedData>(mainTrigger, new TrackTriggeredSharedData() { actived = true });
-            EntityManager.AddComponentData<DeleteComponent>(mainTrigger, new DeleteComponent(){
+            EntityManager.AddComponentData<DeleteComponent>(mainTrigger, new DeleteComponent()
+            {
                 delay = 3f,
                 startTime = Time.ElapsedTime
             });
@@ -91,15 +92,19 @@ namespace JoaoSantos.Runner3D.WorldElement
         private void CalculateNextTrackPosition()
         {
             Entities
+                .WithAll<TrackComponentData>()
                 .WithoutBurst()
-                .ForEach((Entity entity, ref TrackComponentData track) =>
+                .ForEach((Entity entity) =>
                 {
                     LocalToWorld world = EntityManager.GetComponentData<LocalToWorld>(entity);
                     var position = world.Position;
 
-                    this.nextYPosition = position.y;
-                    this.nextTrackPosition = position.z;
+                    this.nextYPosition = UnityEngine.Mathf.Min(this.nextYPosition, position.y);
+                    this.nextTrackPosition = UnityEngine.Mathf.Max(this.nextTrackPosition, position.z);
                 }).Run();
+
+            Debugs.Log("position", this.nextYPosition, this.nextTrackPosition);
+
         }
 
         #endregion

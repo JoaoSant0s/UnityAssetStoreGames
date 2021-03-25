@@ -29,11 +29,11 @@ namespace JoaoSantos.Runner3D.WorldElement
 
         private void PlayerMovementTrigger(ref Translation translation, ref PlayerMovementComponentData data)
         {
-            if (Input.GetKeyUp(KeyCode.LeftArrow))
+            if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A))
             {
                 MoveLeft(ref translation, ref data);
             }
-            else if (Input.GetKeyUp(KeyCode.RightArrow))
+            else if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D))
             {
                 MoveRight(ref translation, ref data);
             }

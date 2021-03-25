@@ -20,7 +20,7 @@ namespace JoaoSantos.Runner3D.WorldElement
             var elapsedTime = Time.ElapsedTime;
 
             Entities
-                .ForEach((Entity entity, DeleteComponent deleted) =>
+                .ForEach((Entity entity, ref DeleteComponent deleted) =>
                 {
                     if (elapsedTime - deleted.startTime < deleted.delay) return;
 
