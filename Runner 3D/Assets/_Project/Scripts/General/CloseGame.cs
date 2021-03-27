@@ -4,8 +4,7 @@ using UnityEngine;
 
 namespace JoaoSantos.General
 {
-
-    public class CloseProject : MonoBehaviour
+    public class CloseGame : MonoBehaviour
     {
         void Update()
         {
