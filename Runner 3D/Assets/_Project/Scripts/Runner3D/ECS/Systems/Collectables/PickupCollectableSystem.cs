@@ -16,6 +16,14 @@ namespace JoaoSantos.Runner3D.WorldElement
     [UpdateBefore(typeof(EndFramePhysicsSystem))]
     public class PickupCollectableSystem : SystemBase
     {
+
+        #region Events
+
+        public delegate void OnPickupCollectable();
+        public static OnPickupCollectable PickupCollectable;
+
+        #endregion
+
         #region Systems
 
         private ExportPhysicsWorld exportPhysicsWorld = default;
@@ -103,6 +111,8 @@ namespace JoaoSantos.Runner3D.WorldElement
                 if (entitiesToDelete.HasComponent(entityB)) return;
 
                 entityCommandBuffer.AddComponent(entityB, new DeleteComponent() { startTime = elapsedTime });
+                
+                if (PickupCollectable != null) PickupCollectable();
             }
         }
     }
