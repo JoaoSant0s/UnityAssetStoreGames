@@ -15,7 +15,7 @@ namespace JoaoSantos.Runner3D.WorldElement
     [UpdateAfter(typeof(TriggerTrackSystem))]
     public class SpawnTrackSystem : JobComponentSystem
     {
-        private const float trackYOffsetPosition = -0.1f;
+        private const float trackYOffsetPosition = -0.08f;
 
         private EntityQuery triggedEntityQuery = default;
 
@@ -102,9 +102,6 @@ namespace JoaoSantos.Runner3D.WorldElement
                     this.nextYPosition = UnityEngine.Mathf.Min(this.nextYPosition, position.y);
                     this.nextTrackPosition = UnityEngine.Mathf.Max(this.nextTrackPosition, position.z);
                 }).Run();
-
-            Debugs.Log("position", this.nextYPosition, this.nextTrackPosition);
-
         }
 
         #endregion

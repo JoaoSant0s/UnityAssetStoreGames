@@ -27,9 +27,11 @@ namespace JoaoSantos.Runner3D.WorldElement
             {
                 if (!data.enableForwardMove) return;
 
-                ApplyForwardMovement(ref velocity, dt, in data);
+                velocity.Angular = float3.zero;
 
                 rotation.FreezeRotation();
+
+                ApplyForwardMovement(ref velocity, dt, in data);
             }).Run();
             
             return default;
