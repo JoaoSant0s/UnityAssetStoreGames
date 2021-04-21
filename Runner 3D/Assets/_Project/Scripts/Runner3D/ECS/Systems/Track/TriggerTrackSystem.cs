@@ -12,8 +12,6 @@ using JoaoSantos.General;
 namespace JoaoSantos.Runner3D.WorldElement
 {
     [UpdateAfter(typeof(PlayerForwardMoveSystem))]
-    [UpdateAfter(typeof(StepPhysicsWorld))]
-    [UpdateBefore(typeof(EndFramePhysicsSystem))]
     public class TriggerTrackSystem : SystemBase
     {
         #region Systems

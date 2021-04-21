@@ -12,8 +12,6 @@ using JoaoSantos.General;
 namespace JoaoSantos.Runner3D.WorldElement
 {
     [UpdateAfter(typeof(PlayerForwardMoveSystem))]
-    [UpdateAfter(typeof(StepPhysicsWorld))]
-    [UpdateBefore(typeof(EndFramePhysicsSystem))]
     public class PickupCollectableSystem : SystemBase
     {
 
@@ -111,7 +109,7 @@ namespace JoaoSantos.Runner3D.WorldElement
                 if (entitiesToDelete.HasComponent(entityB)) return;
 
                 entityCommandBuffer.AddComponent(entityB, new DeleteComponent() { startTime = elapsedTime });
-                
+
                 if (PickupCollectable != null) PickupCollectable();
             }
         }
