@@ -11,7 +11,7 @@ public class Debugs
         for (int i = 0; i < list.Length; i++)
         {
             log += list[i];
-            if (i + 1 < list.Length) log += ", ";
+            if (i + 1 < list.Length) log += " --- ";
         }
         Debug.Log(log);
     }
@@ -33,7 +33,7 @@ public class Debugs
         for (int i = 0; i < list.Count; i++)
         {
             log += list[i];
-            if (i + 1 < list.Count) log += ", ";
+            if (i + 1 < list.Count) log += " --- ";
         }
         return log;
     }
@@ -45,7 +45,7 @@ public class Debugs
         for (int i = 0; i < list.Length; i++)
         {
             log += list[i];
-            if (i + 1 < list.Length) log += ", ";
+            if (i + 1 < list.Length) log += " --- ";
         }
         return log;
     }
