@@ -47,7 +47,7 @@ namespace JoaoSantos.Runner3D.WorldElement
             collectableQuery = GetEntityQuery(
                 new EntityQueryDesc
                 {
-                    All = new ComponentType[] { typeof(CollectableComponentData) }
+                    All = new ComponentType[] { typeof(CollectableComponentTag) }
                 }
             );
         }

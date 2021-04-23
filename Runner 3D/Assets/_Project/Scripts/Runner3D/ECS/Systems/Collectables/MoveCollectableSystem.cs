@@ -15,7 +15,7 @@ namespace JoaoSantos.Runner3D.WorldElement
         {
             var dt = Time.DeltaTime;
 
-            Entities.ForEach((ref Translation translation, ref CollectableComponentData collectable) =>
+            Entities.ForEach((ref Translation translation, ref WobbleComponentData collectable) =>
             {
                 var startY = collectable.StartPosition.y;
 

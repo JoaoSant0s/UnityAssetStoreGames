@@ -9,7 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3066981398822356346}
-  - component: {fileID: 819659324991657257}
+  - component: {fileID: 649885649958157703}
+  - component: {fileID: 1593451380048026253}
+  - component: {fileID: 8939787985002947501}
   - component: {fileID: 6311875712555236438}
   - component: {fileID: 3508385619507975619}
   - component: {fileID: 148378247658027680}
@@ -35,7 +37,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &819659324991657257
+--- !u!114 &649885649958157703
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,10 +46,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 3598184902822754136}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 047421ec9b6e7f24ba9f4ad77b811fdf, type: 3}
+  m_Script: {fileID: 11500000, guid: f38c33a54ef89f7408f0770784046737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1593451380048026253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3598184902822754136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 615ad291d29443b46832da0da24ff9ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 1
+  baseOrientation:
+    x: -1
+    y: 0
+    z: 0
+--- !u!114 &8939787985002947501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3598184902822754136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffb7c6ca81f6e914d869dadd4dec00ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   moveSpeed: 0.5
   invertDirection: 0
   moveYLimit:
@@ -66,6 +96,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_MotionType: 1
+  m_Smoothing: 0
   m_Mass: 1
   m_LinearDamping: 0.01
   m_AngularDamping: 0.05
@@ -244,23 +275,7 @@ MonoBehaviour:
         Tag06: 0
         Tag07: 0
     m_SerializedVersion: 1
-    m_BelongsTo_Deprecated:
-      m_Override: 0
-      m_Value: 
-    m_CollidesWith_Deprecated:
-      m_Override: 0
-      m_Value: 
-    m_CustomTags_Deprecated:
-      m_Override: 0
-      m_Value: 
-    m_IsTrigger_Deprecated:
-      m_Override: 0
-      m_Value: 0
-    m_RaisesCollisionEvents_Deprecated:
-      m_Override: 0
-      m_Value: 0
   m_SerializedVersion: 1
-  m_ConvexRadius_Deprecated: -1
 --- !u!23 &148378247658027680
 MeshRenderer:
   m_ObjectHideFlags: 0

@@ -12,11 +12,10 @@ using Unity.Physics;
 
 namespace JoaoSantos.Runner3D.WorldElement
 {
-    [RequiresEntityConversion]
     public class CollectablePointConversion : MonoBehaviour, IConvertGameObjectToEntity
     {
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
-        {            
+        {
             dstManager.AddComponent(entity, typeof(CollectablePointTag));
             dstManager.AddSharedComponentData(entity, new CollectablePointSharedData() { spawned = false });
         }

@@ -60,7 +60,7 @@ namespace JoaoSantos.Runner3D.WorldElement
 
                     LocalToWorld world = EntityManager.GetComponentData<LocalToWorld>(entityPoint);
 
-                    EntityManager.UpdateTranslationComponentData(collectableInstance, world.Position);                    
+                    EntityManager.UpdateTranslationComponentData(collectableInstance, world.Position);
 
                     SetStartLocalPosition(collectableInstance);
 
@@ -74,13 +74,13 @@ namespace JoaoSantos.Runner3D.WorldElement
         }
 
         private void SetStartLocalPosition(Entity entity)
-        {
-            var collectable = EntityManager.GetComponentData<CollectableComponentData>(entity);
+        {            
             var translation = EntityManager.GetComponentData<Translation>(entity);
+            var wobble = EntityManager.GetComponentData<WobbleComponentData>(entity);
 
-            collectable.StartPosition = translation.Value;
+            wobble.StartPosition = translation.Value;
 
-            EntityManager.SetComponentData<CollectableComponentData>(entity, collectable);
+            EntityManager.SetComponentData<WobbleComponentData>(entity, wobble);
         }
     }
 }

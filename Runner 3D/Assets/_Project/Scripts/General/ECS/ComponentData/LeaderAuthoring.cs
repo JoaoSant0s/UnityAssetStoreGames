@@ -11,8 +11,7 @@ using Unity.Transforms;
 using Unity.Physics;
 
 namespace JoaoSantos.General
-{
-    [RequiresEntityConversion]
+{    
     [AddComponentMenu("Custom Authoring/Leader Authoring")]
     public class LeaderAuthoring : MonoBehaviour, IConvertGameObjectToEntity
     {
